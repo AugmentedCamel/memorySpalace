@@ -5,9 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Scenes/MemoryAnchorSpawnertwo.unity
+    guid: e2687a4da13bdbb42bf6d1e07402ea6e
+  - enabled: 1
+    path: Assets/Scenes/MemorySpawnerThree.unity
+    guid: b6af4361dbf22904c9ea93a62a58a1c1
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 29b71dbc7dfff6045aed4f9f550f148e,
       type: 2}
