@@ -11,9 +11,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MemoryAnchorSpawnertwo.unity
     guid: e2687a4da13bdbb42bf6d1e07402ea6e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MemorySpawnerThree.unity
     guid: b6af4361dbf22904c9ea93a62a58a1c1
+  - enabled: 1
+    path: Assets/Scenes/MemorySpawnerFour.unity
+    guid: 7445bea38db1ecf42b4e63b972bbb57d
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 29b71dbc7dfff6045aed4f9f550f148e,
       type: 2}

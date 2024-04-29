@@ -13,6 +13,8 @@ public class AnchorspotManager : MonoBehaviour
     private Anchorspot currentAnchorspot;
     [SerializeField] private MRUK _mruk;
     [SerializeField] private Transform _player;
+    [SerializeField] private MemorySlotManager _memorySlotManager;
+    [SerializeField] private AnchorSaver _anchorSaver;
     
     private int _frameCounter = 0;
     
@@ -32,15 +34,46 @@ public class AnchorspotManager : MonoBehaviour
         
         OnPopulatedAnchorSpots();
     }
+
+
+    private bool CheckMemory() //un used
+    {
+        return _anchorSaver.OnAllAnchorsLoaded(); //true if the anchor amount is the same as last time
+    }
     
+    private void LoadMemory()
+    {
+        _anchorSaver.LoadMemorySlots();
+    }
     
+    private void ResetMemory()
+    {
+        //_anchorSaver.ResetMemory();
+    }
     
     private void OnPopulatedAnchorSpots()
     {
-        if (anchorspots.Count == 0) //this means that the scene has no anchorspots saved
+        if (anchorspots.Count == 0) //this means that this is the first time the scene is loaded
         {
             PopulateAnchorspots();
         }
+        /*
+        if (CheckMemory())
+        {
+            //if the memory is the same as the current anchorspots, do nothing
+            //Debug.Log("there are no scene anchors added since last time");
+            //now we should also check the memory of the chosen anchorspots
+            //LoadMemory();
+        }
+        else
+        {
+            Debug.Log("there are scene anchors added since last time");
+            //if the memory is different The anchorspots are different from the last time the scene was loaded this means the player should choose new memoryslots
+            //this means that the player should choose new memoryslots and that 
+            //ResetMemory();
+        }*/
+        
+        
         
         foreach (Anchorspot anchorspot in anchorspots)
         {
@@ -51,6 +84,10 @@ public class AnchorspotManager : MonoBehaviour
     
     private void CheckDistance(Anchorspot anchorspot)
     {
+        if (anchorspot.Hidden)
+        {
+            return;
+        }
         float distance = Vector3.Distance(_player.position, anchorspot.transform.position);
         if (distance < 1)
         {
@@ -64,6 +101,20 @@ public class AnchorspotManager : MonoBehaviour
         }
     }
     
+    
+    public int GetCurrentChosenAmount()
+    {
+        int chosenAmount = 0;
+        foreach (Anchorspot anchorspot in anchorspots)
+        {
+            if (anchorspot.IsChosen)
+            {
+                chosenAmount++;
+            }
+        }
+        return chosenAmount;
+        //Debug.Log("Chosen amount: " + chosenAmount);
+    }
     private void Update()
     {
         _frameCounter++;
@@ -78,6 +129,8 @@ public class AnchorspotManager : MonoBehaviour
             }
             _frameCounter = 0;
         }
+        
+        
         
     }
 }
