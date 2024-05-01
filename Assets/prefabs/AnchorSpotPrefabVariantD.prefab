@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1957161212309633}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -48,8 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 0
-  memorySlotBubble: {fileID: 2686650396911392983}
-  unpickedMemorySlotBubble: {fileID: 5787973052367786271}
+  _memorySlotBubble: {fileID: 2686650396911392983}
+  _unpickedMemorySlotBubble: {fileID: 5787973052367786271}
+  _memoryBubbleManager: {fileID: 0}
 --- !u!114 &5545204979100232912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,7 +264,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5787973052367786271}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.293}
   m_LocalScale: {x: 2.794131, y: 2.794131, z: 2.794131}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -699,6 +700,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 267819293322453430, guid: b039403925013074bbbc62b6ed7b9feb,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 267819293322453430, guid: b039403925013074bbbc62b6ed7b9feb,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 267819293322453430, guid: b039403925013074bbbc62b6ed7b9feb,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 267819293322453430, guid: b039403925013074bbbc62b6ed7b9feb,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CheckIfOrderGameIsCorrect
+      objectReference: {fileID: 0}
+    - target: {fileID: 267819293322453430, guid: b039403925013074bbbc62b6ed7b9feb,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TrainOrderGame, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 267819293322453430, guid: b039403925013074bbbc62b6ed7b9feb,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2531204280974741518}
+    - target: {fileID: 267819293322453430, guid: b039403925013074bbbc62b6ed7b9feb,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: MemorySlot, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2160972844574504021, guid: b039403925013074bbbc62b6ed7b9feb,
         type: 3}
