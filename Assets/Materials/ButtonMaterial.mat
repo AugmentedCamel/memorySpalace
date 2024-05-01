@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ButtonMaterial
-  m_Shader: {fileID: 4800000, guid: 8b285c159c620c6459d22feaaadf4445, type: 3}
+  m_Shader: {fileID: 4800000, guid: d24e7f72dad0f494b9a141ca0dea0382, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

@@ -25,7 +25,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _Angle: 9.9
+    - _Angle: 90
     - _CeilingHeight: 1.5
     - _EdgeTimeline: 0.95
     - _EffectIntensity: 0.32
