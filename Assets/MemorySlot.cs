@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class MemorySlot : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public void OrderButtonPressed()
-    {
-        Debug.Log("Order Button Pressed");
-    }
+    public bool isActive = false;
+    [SerializeField] private GameObject memorySlotBubble;
+    [SerializeField] private GameObject unpickedMemorySlotBubble;
     
-    void Start()
+    private void Start()
     {
-        
+        memorySlotBubble.SetActive(false);
+        unpickedMemorySlotBubble.SetActive(true);
+        isActive = false;
+    }
+    public void SetActive()
+    {
+        isActive = true;
+        memorySlotBubble.SetActive(true);
+        unpickedMemorySlotBubble.SetActive(false);
     }
 
     // Update is called once per frame

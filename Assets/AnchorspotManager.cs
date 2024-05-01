@@ -22,6 +22,7 @@ public class AnchorspotManager : MonoBehaviour
     //this is called when the scene is loaded and there are no anchorspots saved.
     public void PopulateAnchorspots()
     {
+        Debug.Log("Populating Anchorspots");
         //get all anchorspots in the scene
         Anchorspot[] anchorspotsInScene = FindObjectsOfType<Anchorspot>();
         foreach (Anchorspot anchorspot in anchorspotsInScene)
@@ -100,7 +101,17 @@ public class AnchorspotManager : MonoBehaviour
             
         }
     }
+
+    private void CheckNearAnchorSpots()
+    {
+        Collider[] nearAnchorspotsColliders = Physics.OverlapSphere(_player.position, 10);
+        Anchorspot[] nearAnchorspots = nearAnchorspotsColliders.Select(collider => collider.GetComponent<Anchorspot>()).Where(anchorspot => anchorspot != null).ToArray();
     
+        foreach (Anchorspot anchorspot in nearAnchorspots)
+        {
+            Debug.Log("near anchorspot: " + anchorspot.name);
+        }
+    }
     
     public int GetCurrentChosenAmount()
     {
@@ -117,18 +128,7 @@ public class AnchorspotManager : MonoBehaviour
     }
     private void Update()
     {
-        _frameCounter++;
-        if (_frameCounter == 10)
-        {
-            foreach (Anchorspot anchorspot in anchorspots)
-            {
-                if (anchorspot.IsActive)
-                {
-                    CheckDistance(anchorspot);
-                }
-            }
-            _frameCounter = 0;
-        }
+        CheckNearAnchorSpots();
         
         
         

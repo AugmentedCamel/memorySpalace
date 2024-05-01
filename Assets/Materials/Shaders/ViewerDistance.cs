@@ -13,7 +13,6 @@ public class ViewerDistance : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distance = Vector3.Distance(Camera.main.transform.position, transform.position);
-        GetComponent<Renderer>().material.SetFloat("_ViewerDistance", distance);
+        
     }
 }

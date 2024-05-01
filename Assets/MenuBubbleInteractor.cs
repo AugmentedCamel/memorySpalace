@@ -49,14 +49,14 @@ public class MenuBubbleInteractor : MonoBehaviour
     
     private void ButtonHover() //hover
     {
-        Debug.Log("Button Hover");
+        //Debug.Log("Button Hover");
         _activeCoroutine = StartCoroutine(TriggerTimer());
         _renderer.material = _hovermaterial;
     }
 
     private void ButtonActivated() //pressed
     {
-        Debug.Log("Button Activated");
+        //Debug.Log("Button Activated");
         _renderer.material = _pressedmaterial;
         _activeCoroutine = StartCoroutine(DeactivateButton());
         

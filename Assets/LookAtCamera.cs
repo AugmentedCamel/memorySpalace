@@ -7,6 +7,7 @@ public class LookAtCamera : MonoBehaviour
     public bool lookAtCamera = true;
     [SerializeField] private GameObject _camera;
     
+    
     // Start is called before the first frame update
     void Start()
     {
