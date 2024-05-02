@@ -5,8 +5,11 @@ using UnityEngine;
 public class MemorySlot : MonoBehaviour
 {
     public bool isActive = false;
+
+    private bool _isHidden = false;
     [SerializeField] private GameObject _memorySlotBubble;
     [SerializeField] private GameObject _unpickedMemorySlotBubble;
+    [SerializeField] private GameObject _invisibleMemorySlotBubble;
     [SerializeField] private MemoryBubbleManager _memoryBubbleManager;
     private void Start()
     {
@@ -16,6 +19,7 @@ public class MemorySlot : MonoBehaviour
     }
     public void SetActive()
     {
+        if (_isHidden) { return;}
         isActive = true;
         _memorySlotBubble.SetActive(true);
         _unpickedMemorySlotBubble.SetActive(false);
@@ -24,7 +28,26 @@ public class MemorySlot : MonoBehaviour
         
     }
     
+    public void SetInvisible()
+    {
+        if (_isHidden) { return;}
+        isActive = true;
+        _memorySlotBubble.SetActive(false);
+        _unpickedMemorySlotBubble.SetActive(false);
+        _invisibleMemorySlotBubble.SetActive(true);
+    }
     
+    public void HideAllUnusedMemorySlots()
+    {
+        if (!isActive)
+        {
+            _memorySlotBubble.SetActive(false);
+            _unpickedMemorySlotBubble.SetActive(false);
+            _invisibleMemorySlotBubble.SetActive(false);
+            
+        }
+        
+    }
 
     // Update is called once per frame
     void Update()
