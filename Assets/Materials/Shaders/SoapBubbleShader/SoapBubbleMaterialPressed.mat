@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SoapBubbleMaterial
+  m_Name: SoapBubbleMaterialPressed
   m_Shader: {fileID: -6465566751694194690, guid: 31108fe67bbdfc748bd7cd737da76381,
     type: 3}
   m_Parent: {fileID: 0}
@@ -38,11 +38,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_6037E5FF: 0
+    - Vector1_6037E5FF: 0.25
     - Vector1_65F8184F: 0.49
     - Vector1_A4D26BEC: 0.76
-    - Vector1_C0AF5932: 0.14
-    - Vector1_DDE46524: 0.1
+    - Vector1_C0AF5932: 1
+    - Vector1_DDE46524: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors: []
