@@ -7,6 +7,8 @@ public class MemorySlot : MonoBehaviour
     public bool isActive = false;
 
     private bool _isHidden = false;
+    
+    [SerializeField] private AnchorPlacement _anchorPlacement;
     [SerializeField] private GameObject _memorySlotBubble;
     [SerializeField] private GameObject _unpickedMemorySlotBubble;
     [SerializeField] private GameObject _invisibleMemorySlotBubble;
@@ -49,6 +51,13 @@ public class MemorySlot : MonoBehaviour
         
     }
 
+    public void SaveAnchorSpot()
+    {
+        //use this location to save as a persistant spatial anchor.
+        _anchorPlacement.CreateSpatialAnchor(transform.position, transform.rotation);
+        
+        //should hide or delete the memory slot bubble.   
+    }
     // Update is called once per frame
     void Update()
     {

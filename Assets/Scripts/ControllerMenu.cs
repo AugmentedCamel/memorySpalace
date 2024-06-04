@@ -79,7 +79,7 @@ public class ControllerMenu : MonoBehaviour
         Debug.Log("Memory Saved");
         //_memoryslotManager.OverrideMemory();
         
-        _memoryslotManager.InitializeGameState();
+        //_memoryslotManager.InitializeGameState();
         //get all active anchorspots
         //save them to memory
     }
@@ -88,7 +88,7 @@ public class ControllerMenu : MonoBehaviour
     {
         Debug.Log("New Slots Picked");
         
-        _memoryslotManager.SetupGameState();
+        //_memoryslotManager.SetupGameState();
         //get all active anchorspots
         //save them to memory
     }

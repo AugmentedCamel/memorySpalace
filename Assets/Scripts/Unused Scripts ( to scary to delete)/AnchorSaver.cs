@@ -88,7 +88,7 @@ public class AnchorSaver : MonoBehaviour
                 _anchorspotManager.anchorspots[i].IsChosen = true;
             }
         }
-        _memorySlotManager.InitializeGameState(); //start the game with the chosen anchorspots
+        //_memorySlotManager.InitializeGameState(); //start the game with the chosen anchorspots
         
     }
     
