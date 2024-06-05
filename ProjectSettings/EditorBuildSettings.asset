@@ -20,9 +20,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Prototype Scenes/MemoryTrainer.unity
     guid: f8c7389e65140fc459a10116e17c3a34
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Prototype Scenes/MemoryTrainer DebugScene.unity
     guid: a96c61d788488f44ba0d59f0a6b552a5
+  - enabled: 1
+    path: Assets/Scenes/MVP Scenes/MVPv2.unity
+    guid: e26539093a4a2964cbef37398a610fa2
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 29b71dbc7dfff6045aed4f9f550f148e,
       type: 2}
