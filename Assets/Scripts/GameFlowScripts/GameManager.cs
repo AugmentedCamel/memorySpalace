@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -14,15 +15,16 @@ public class GameManager : MonoBehaviour
         gameNeutral = 1,
         createNewSequence = 2,
         TestSequence = 3,
+        Debug = 4
         
     }
 
-    public GameState gameState = GameState.gameInit;
+    public GameState gameState = GameState.Debug;
     public bool gameLaunched = false;
     
     [SerializeField] private GameBaseAnchorController _gameBaseAnchorController;
     
-    private GameState _lastGameState;
+    private GameState _lastGameState = GameState.Debug;
     
     // Start is called before the first frame update
     void Start()
@@ -42,28 +44,38 @@ public class GameManager : MonoBehaviour
     private void GameLaunch()
     {
         //check if there is any saved data
+        if (_gameBaseAnchorController.CheckForSavedData())
+        {
+            //if there is saved data, load the data
+            StartGameWithLoadedData();
+            Debug.Log("game launched with data");
+        }
+        else
+        {
+            //if there is no saved data, set gamestate to init
+            ChangeGameState(GameState.gameInit);
+            Debug.Log("game lauched empty");
+        }
         //if there is saved data, load the data
         //if there is no saved data, set gamestate to init
         //and optionally launch a tutorial
         
-        //if there is saved data load the data
-        StartGameInit();
     }
     
+    [Button]
     private void StartGameWithLoadedData()
     {
-        //load the data
+        _gameBaseAnchorController.LoadSavedAnchors();
+        ChangeGameState(GameState.gameNeutral);
         //set the gamestate to neutral
         //and start the game
     }
     
+    [Button]
     private void StartGameInit()
     {
-        //first delete existing data if there is some
-        //set the gamestate to Init
-        gameState = GameState.gameInit;
-        OnGameStateInitTrigger();
-        
+        ChangeGameState(GameState.gameInit);
+        //set the gamestate to init
         //and start the game
     }
     
@@ -104,7 +116,7 @@ public class GameManager : MonoBehaviour
         
         //delete existing memoryspots
         //load anchorspots on MRUK scene anchors
-        _gameBaseAnchorController.LoadAnchorSpots();
+        _gameBaseAnchorController.LoadAnchorSpots(); //this removes all saved anchors and spawns new possible ones on scene anchors.
         Debug.Log("Game Init");
         
     }

@@ -8,6 +8,7 @@ public class GameBaseAnchorController : MonoBehaviour
 {
     [SerializeField] private AnchorPrefabSpawner _anchorPrefabSpawner;
     [SerializeField] private MemoryBubbleManager _memoryBubbleManager;
+    [SerializeField] private SpatialAnchorManager _spatialAnchorManager;
     
     // Start is called before the first frame update
     void Start()
@@ -15,24 +16,47 @@ public class GameBaseAnchorController : MonoBehaviour
         
     }
     
-    public void LoadAnchorSpots()
+    public bool CheckForSavedData()
+    {
+        if (!PlayerPrefs.HasKey(SpatialAnchorManager.NumUuidsPlayerPref))
+        {
+            PlayerPrefs.SetInt(SpatialAnchorManager.NumUuidsPlayerPref, 0);
+            
+        }
+        
+        var playerUuidCount = PlayerPrefs.GetInt(SpatialAnchorManager.NumUuidsPlayerPref);
+        
+        if (playerUuidCount == 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+    
+    public void LoadAnchorSpots() //this is called to populate scene anchors with anchors that could be saved
     {
         _memoryBubbleManager.memorySlots.Clear();
         _anchorPrefabSpawner.SpawnPrefabs(true);
         
+        //for now, delete all the anchors if we want to create new ones
+        DeleteSavedAnchors();
+        
     }
     
-    [Button]
-    public void SaveAnchorSpots()
+    private void DeleteSavedAnchors() //this is called to delete saved anchors
     {
-        //get the memory slots and create a new spatial anchor prefab to create a bubble spot.
-        foreach (var memorySlot in _memoryBubbleManager.memorySlots)
-        {
-            memorySlot.SaveAnchorSpot();
-        }
-        
-        _anchorPrefabSpawner.ClearPrefabs();
+        _spatialAnchorManager.UnsaveAllAnchors();
+        Debug.Log("Deleting saved anchors");
     }
+    
+    public void LoadSavedAnchors() //this is called to load saved anchors
+    {
+        _spatialAnchorManager.LoadSavedAnchors();
+        Debug.Log("Loading saved anchors");
+    }
+    
+    
     // Update is called once per frame
     void Update()
     {

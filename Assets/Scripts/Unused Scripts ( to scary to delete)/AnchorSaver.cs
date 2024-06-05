@@ -5,6 +5,12 @@ using NaughtyAttributes;
 
 public class AnchorSaver : MonoBehaviour
 {
+    
+    // THIS SCRIPT IS NOT LONGER USED
+    
+    
+    
+    
     //this script saves the total amount of anchorspots to check if nothing has changes since last time
     //and this script saves the chosen anchorspots to memory
     [SerializeField] private AnchorspotManager _anchorspotManager;

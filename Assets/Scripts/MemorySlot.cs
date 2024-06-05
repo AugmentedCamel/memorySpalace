@@ -33,7 +33,7 @@ public class MemorySlot : MonoBehaviour
     public void SetInvisible()
     {
         if (_isHidden) { return;}
-        isActive = true;
+        isActive = false;
         _memorySlotBubble.SetActive(false);
         _unpickedMemorySlotBubble.SetActive(false);
         _invisibleMemorySlotBubble.SetActive(true);
@@ -55,7 +55,7 @@ public class MemorySlot : MonoBehaviour
     {
         //use this location to save as a persistant spatial anchor.
         _spatialAnchorManager.CreateSpatialAnchor(transform.position, transform.rotation);
-        
+        SetInvisible();
         //should hide or delete the memory slot bubble.   
     }
     // Update is called once per frame
