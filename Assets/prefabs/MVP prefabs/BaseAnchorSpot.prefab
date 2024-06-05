@@ -890,6 +890,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8766880183784171388}
+        m_TargetAssemblyTypeName: MemorySlot, Assembly-CSharp
+        m_MethodName: SaveAnchorSpot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   bubbleGrabDataEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1163,6 +1175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 0
+  _spatialAnchorManager: {fileID: 0}
   _memorySlotBubble: {fileID: 4743992992076072696}
   _unpickedMemorySlotBubble: {fileID: 4582389928395042883}
   _invisibleMemorySlotBubble: {fileID: 5604117853458601663}

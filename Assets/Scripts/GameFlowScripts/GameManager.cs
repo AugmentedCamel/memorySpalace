@@ -61,7 +61,9 @@ public class GameManager : MonoBehaviour
     {
         //first delete existing data if there is some
         //set the gamestate to Init
-        ChangeGameState(GameState.gameInit);
+        gameState = GameState.gameInit;
+        OnGameStateInitTrigger();
+        
         //and start the game
     }
     
@@ -103,6 +105,7 @@ public class GameManager : MonoBehaviour
         //delete existing memoryspots
         //load anchorspots on MRUK scene anchors
         _gameBaseAnchorController.LoadAnchorSpots();
+        Debug.Log("Game Init");
         
     }
     
