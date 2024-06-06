@@ -39,5 +39,12 @@ public class BasicPokebuttoModifier : MonoBehaviour
     {
         OnButtonDeselected.Invoke();
     }
-    
+    public void SetInfoText(string text)
+    {
+        InfoTextString = text;
+    }
+    public void SetButtonText(string text)
+    {
+        ButtonTextString = text;
+    }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class BubbleMenuController : MonoBehaviour
 {
+    public GameObject TextPanel;
     [SerializeField] [CanBeNull] private List<BubbleMenuPage>  menuPages;
     
     private int _currentPage = 0;
