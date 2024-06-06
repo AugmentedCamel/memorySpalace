@@ -2,14 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MenuBubbleInteractor : MonoBehaviour
 {
+    public UnityEvent onTriggerEnteredEvent = new UnityEvent();
+    public UnityEvent onTriggerEExitedEvent = new UnityEvent();
+    
     [SerializeField] private Renderer _renderer;
     [SerializeField] private Material _startmaterial;
     [SerializeField] private Material _hovermaterial;
     [SerializeField] private Material _pressedmaterial;
     [SerializeField] private BubbleEventLauncher _bubbleEventLauncher;
+    
+    // [SerializeField] private TextMeshPro 
+    
     private Coroutine _activeCoroutine = null;
     
     
@@ -50,8 +57,11 @@ public class MenuBubbleInteractor : MonoBehaviour
     private void ButtonHover() //hover
     {
         //Debug.Log("Button Hover");
-        _activeCoroutine = StartCoroutine(TriggerTimer());
-        _renderer.material = _hovermaterial;
+        if (_activeCoroutine == null)
+        {
+            _activeCoroutine = StartCoroutine(TriggerTimer());
+            _renderer.material = _hovermaterial;
+        }
     }
 
     private void ButtonActivated() //pressed
@@ -61,6 +71,7 @@ public class MenuBubbleInteractor : MonoBehaviour
         _activeCoroutine = StartCoroutine(DeactivateButton());
         
         _bubbleEventLauncher.LaunchBubbleEvent();
+        onTriggerEnteredEvent.Invoke();
     }
     
     private void ButtonDeactivated() //unpressed
@@ -68,6 +79,7 @@ public class MenuBubbleInteractor : MonoBehaviour
         StopAllCoroutines();
         _activeCoroutine = null;
         _renderer.material = _startmaterial;
+        onTriggerEExitedEvent.Invoke();
     }
     
     private IEnumerator TriggerTimer()
