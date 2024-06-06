@@ -12,6 +12,7 @@ public class SpeechToTextManager : MonoBehaviour
     private AudioClip _currentAudioClip;
     private bool _isRecording = false;
     
+    //this is a test
     private void Awake()
     {
         if (Instance == null)
