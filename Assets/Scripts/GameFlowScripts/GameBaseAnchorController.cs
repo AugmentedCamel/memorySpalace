@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Meta.XR.MRUtilityKit;
-using NaughtyAttributes;
 using UnityEngine;
 
 public class GameBaseAnchorController : MonoBehaviour

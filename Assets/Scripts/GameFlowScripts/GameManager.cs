@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     {
         
     }
-
+    
     public void OnSceneLoaded()
     {
         gameLaunched = true;
