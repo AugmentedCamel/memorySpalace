@@ -23,6 +23,7 @@ public class BubbleMenuController : MonoBehaviour
     {
         if (menuPages != null && menuPages.Count > _currentPage + 1)
         {
+            menuPages[_currentPage].DisablePage();
             _currentPage++;
             menuPages[_currentPage].EnablePage();
         }
@@ -32,6 +33,7 @@ public class BubbleMenuController : MonoBehaviour
     {
         if (menuPages != null && menuPages.Count > page)
         {
+            menuPages[_currentPage].DisablePage();
             _currentPage = page;
             menuPages[_currentPage].EnablePage();
         }
