@@ -5,14 +5,36 @@ using UnityEngine.Events;
 
 public class SpeechToTextManager : MonoBehaviour
 {
+    #region Public Variables
+
+    // Singleton Instance
     public static SpeechToTextManager Instance;
+
+    #endregion
     
+    #region SerializeField Variables - need reference
+
+    // Wit AI Application Voice Experience
     [SerializeField] private AppVoiceExperience _appVoice;
 
+    #endregion
+
+    #region Private Variables
+    
     private AudioClip _currentAudioClip;
     private bool _isRecording = false;
+
+    private UnityEvent<string> _currentPartialEvent;
+    private UnityEvent<string> _currentFullTextEvent;
+    private UnityEvent<AudioClip> _currentAudioClipEvent;
     
-    //this is a test
+    #endregion
+
+    #region Private Basic Methods
+    
+    /// <summary>
+    /// Ensures Singleton Pattern - only one instance of the manager - easy access
+    /// </summary>
     private void Awake()
     {
         if (Instance == null)
@@ -25,73 +47,138 @@ public class SpeechToTextManager : MonoBehaviour
         }
     }
     
+    #endregion
+    
+    #region Recordings
+    
+    /// <summary>
+    /// Method to record only a text.
+    /// Recognized text is returned as the event parameter, as the method is asynchronous.
+    /// </summary>
     public void StartRecording(UnityEvent<string> recognizedTextEvent)
     {
         if(_isRecording) return;
+
+        // set events
+        _currentFullTextEvent = recognizedTextEvent;
         
-        _isRecording = true;
-        _appVoice.Deactivate();
-        _appVoice.Activate();
-        _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
-        _appVoice.VoiceEvents.OnFullTranscription.AddListener(transcription =>
-        {
-            _isRecording = false;
-            recognizedTextEvent.Invoke(transcription);
-            _appVoice.Deactivate();
-            _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
-        });
+        StartRecording(); 
+        
+        // full text recognition
+        StartFullTextRecognition();
     }
 
+    /// <summary>
+    /// Method to record full text and audioclip.
+    /// Recognized text is returned as the recognizedTextEvent parameter - asynchronous call.
+    /// Recorded clip is returned as the recognizedAudioEvent parameter - asynchronous call.
+    /// </summary>
     public void StartRecording(UnityEvent<string> recognizedTextEvent, UnityEvent<AudioClip> recognizedAudioEvent)
     {
         if(_isRecording) return;
+
+        //set events
+        _currentAudioClipEvent = recognizedAudioEvent;
+        _currentFullTextEvent = recognizedTextEvent;
         
-        _isRecording = true;
-        _currentAudioClip = Microphone.Start(Microphone.devices[1], false, 180, 44100);
-        _appVoice.Deactivate();
-        _appVoice.Activate();
-        _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
-        _appVoice.VoiceEvents.OnFullTranscription.AddListener(transcription =>
-        {
-            _isRecording = false;
-            recognizedTextEvent.Invoke(transcription);
-            _appVoice.Deactivate();
-            Microphone.End(Microphone.devices[1]);
-            _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
-            recognizedAudioEvent.Invoke(_currentAudioClip);
-            _currentAudioClip = null;
-        });
+        StartRecording();
+        
+        // full text recognition
+        StartFullTextRecognition();
     }
     
+    /// <summary>
+    /// Method to record partial text, full text and audioclip.
+    /// Partially recognized text is returned as the partialRecognizedText parameter - asynchronous call.
+    /// Full recognized text is returned as the recognizedTextEvent parameter - asynchronous call.
+    /// Recorded clip is returned as the recognizedAudioEvent parameter - asynchronous call.
+    /// </summary>
     public void StartRecording(UnityEvent<string> recognizedTextEvent, UnityEvent<string> partialRecognizedText, UnityEvent<AudioClip> recognizedAudioEvent)
     {
         if(_isRecording) return;
         
+        // set events
+        _currentAudioClipEvent = recognizedAudioEvent;
+        _currentFullTextEvent = recognizedTextEvent;
+        _currentPartialEvent = partialRecognizedText;
+        
+        StartRecording();
+        
+        // partial text recognition
+        StartPartialTextRecognition();
+
+        // full text recognition
+        StartFullTextRecognition();
+    }
+
+    private void StartFullTextRecognition()
+    {
+        _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
+        _appVoice.VoiceEvents.OnFullTranscription.AddListener(transcription =>
+        {
+            _appVoice.Deactivate();
+            _appVoice.Activate();
+            _currentFullTextEvent.Invoke(transcription);
+            
+            // activate again to be able to recognize text with stoppings.
+            _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
+            _appVoice.VoiceEvents.OnFullTranscription.AddListener(transcription =>
+            {
+                _appVoice.Deactivate();
+                _appVoice.Activate();
+                _currentFullTextEvent.Invoke(transcription);
+            });
+        });
+    }
+
+    private void StartPartialTextRecognition()
+    {
+        _appVoice.VoiceEvents.OnPartialTranscription.RemoveAllListeners();
+        _appVoice.VoiceEvents.OnPartialTranscription.AddListener(partialTranscrition =>
+        {
+            _currentPartialEvent.Invoke(partialTranscrition);
+        });
+    }
+
+    /// <summary>
+    /// Initiates recording.
+    /// </summary>
+    private void StartRecording()
+    {
         _isRecording = true;
         _currentAudioClip = Microphone.Start(Microphone.devices[1], false, 180, 44100);
         _appVoice.Deactivate();
         _appVoice.Activate();
-        
-        _appVoice.VoiceEvents.OnPartialTranscription.RemoveAllListeners();
-        _appVoice.VoiceEvents.OnPartialTranscription.AddListener(partialTranscrition =>
-        {
-            partialRecognizedText.Invoke(partialTranscrition);
-        });
-        
-        _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
-        _appVoice.VoiceEvents.OnFullTranscription.AddListener(transcription =>
-        {
-            _isRecording = false;
-            recognizedTextEvent.Invoke(transcription);
-            _appVoice.Deactivate();
-            Microphone.End(Microphone.devices[1]);
-            _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
-            partialRecognizedText.RemoveAllListeners();
-            recognizedAudioEvent.Invoke(_currentAudioClip);
-            _currentAudioClip = null;
-        });
     }
     
+    /// <summary>
+    /// Stops the recording.
+    /// </summary>
+    public void StopRecording()
+    {
+        _isRecording = false;
+        _appVoice.Deactivate();
+        Microphone.End(Microphone.devices[1]);
+        _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
+        _appVoice.VoiceEvents.OnPartialTranscription.RemoveAllListeners();
+        
+        // send the data to listeners
+        _currentAudioClipEvent.Invoke(_currentAudioClip);
+        
+        // delete temporary data
+        _currentAudioClipEvent = null;
+        _currentPartialEvent = null;
+        _currentFullTextEvent = null;
+        _currentAudioClip = null;
+    }
+    
+    #endregion
+
+    #region Percentage Calculation
+    
+    /// <summary>
+    /// Recalculate similarity to percentage.
+    /// </summary>
     public float CalculateSimilarityPercentage(string source, string target)
     {
         int maxLength = Math.Max(source.Length, target.Length);
@@ -101,6 +188,9 @@ public class SpeechToTextManager : MonoBehaviour
         return ((float)(maxLength - distance) / maxLength) * 100;
     }
     
+    /// <summary>
+    /// Algorithm to calculate the similarity of two texts.
+    /// </summary>
     public int LevenshteinDistance(string source, string target)
     {
         if (string.IsNullOrEmpty(source))
@@ -131,6 +221,13 @@ public class SpeechToTextManager : MonoBehaviour
         return distance[sourceLength, targetLength];
     }
     
+    #endregion
+    
+    #region Converter
+    
+    /// <summary>
+    /// Converts AudioClip to string.
+    /// </summary>
     public string AudioClipToString(AudioClip clip)
     {
         float[] samples = new float[clip.samples * clip.channels];
@@ -142,6 +239,9 @@ public class SpeechToTextManager : MonoBehaviour
         return Convert.ToBase64String(byteArray);
     }
 
+    /// <summary>
+    /// Converts string to AudioClip.
+    /// </summary>
     public AudioClip StringToAudioClip(string base64, string name, int channels, int frequency)
     {
         byte[] byteArray = Convert.FromBase64String(base64);
@@ -153,4 +253,6 @@ public class SpeechToTextManager : MonoBehaviour
         clip.SetData(samples, 0);
         return clip;
     }
+    
+    #endregion
 }
