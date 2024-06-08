@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     public bool gameLaunched = false;
     
     [SerializeField] private GameBaseAnchorController _gameBaseAnchorController;
-    
+    [SerializeField] private MenuController _menuController;
     private GameState _lastGameState = GameState.Debug;
     
     // Start is called before the first frame update
@@ -72,13 +72,28 @@ public class GameManager : MonoBehaviour
     }
     
     [Button]
-    private void StartGameInit()
+    public void StartGameInit()
     {
         ChangeGameState(GameState.gameInit);
         //set the gamestate to init
         //and start the game
     }
     
+    public void StartRecordingBubbles() //handle from hand menu
+    {
+        ChangeGameState(GameState.createNewSequence);
+    }
+
+    public void StartTrainingOfBubbles()
+    {
+        ChangeGameState(GameState.TestSequence);
+    }
+
+    private void BackToNeutralGamestate()
+    {
+        ChangeGameState(GameState.gameNeutral);
+    }
+
     public void ChangeGameState(GameState state)
     {
         _lastGameState = gameState;
@@ -113,26 +128,48 @@ public class GameManager : MonoBehaviour
     private void OnGameStateInitTrigger()
     {
         //init the game
-        
+        _menuController.ActivateInitMenu();
         //delete existing memoryspots
         //load anchorspots on MRUK scene anchors
         _gameBaseAnchorController.LoadAnchorSpots(); //this removes all saved anchors and spawns new possible ones on scene anchors.
         Debug.Log("Game Init");
-        
     }
-    
+
+    public void OnGameStateInitEnding()
+    {
+        //disable all memory slots
+        ChangeGameState(GameState.gameNeutral);
+    }
+
     private void OnGameStateNeutralTrigger()
     {
         //start the game
+        _menuController.ActivateMenuNeutral();
+
+        //should hide all bubbles
     }
     
     private void OnGameStateCreateNewSequenceTrigger()
     {
         //create a new sequence
+        _menuController.ActivateMenuSetMemo();
+    }
+
+    public void OnExitCreatingBubbleSequenceTrigger()
+    {
+        //do things to that disable the possibility to set new bubbles
+        BackToNeutralGamestate();
     }
     
     private void OnGameStateTestSequenceTrigger()
     {
         //test the sequence
+        _menuController.ActivateMenuTraining();
+    }
+
+    public void OnExitTestingBubblesTrigger()
+    {
+        //disable the funcionality to test / train on bubbles
+        BackToNeutralGamestate();
     }
 }

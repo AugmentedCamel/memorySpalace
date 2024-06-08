@@ -1,31 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class MenuController : MonoBehaviour
 {
     public GameObject[] menuItems;
-    
+    private GameObject _activeMenu;
+
     private bool _menuOpen = false;
+
     
-    [Button]
+    public void ActivateInitMenu()
+    {
+        SetMenuActive(0);
+    }
+
+    
+    public void ActivateMenuNeutral()
+    {
+        SetMenuActive(1);
+    }
+
+    public void ActivateMenuTraining()
+    {
+        SetMenuActive(2);
+    }
+
+    public void ActivateMenuSetMemo()
+    {
+        SetMenuActive(3);
+    }
+
+    private void SetMenuActive(int index)
+    {
+        _activeMenu = menuItems[index];
+
+           
+        //disable all other menu's
+        foreach (var item in menuItems)
+        {
+            if (menuItems[index] != item)
+            {
+                item.SetActive(false);
+            }
+        }
+    }
+
     public void OpenMenu()
     {
         Debug.Log("menu opened");
         if (!_menuOpen)
         {
-            foreach (var item in menuItems)
-            {
-                item.SetActive(true);
-            }
+            _activeMenu.SetActive(true);
             _menuOpen = true;
             
         }
 
     }
     
-    [Button]
     private void CloseMenu()
     {
         Debug.Log("menu closed");

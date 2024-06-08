@@ -208,84 +208,7 @@ MonoBehaviour:
     - id: 1315332902220652
       name: wit$unshuffle_playlist
       entities: []
-    entities:
-    - name: wit$amount_of_money
-      id: 535a8110-2ea7-414f-a024-cf928b076d17
-      lookups: []
-      roles:
-      - name: amount_of_money
-        id: 388070769579971
-      keywords: []
-    - name: wit$datetime
-      id: 535a810f-8911-4bfe-976a-6e3c193f1251
-      lookups: []
-      roles:
-      - name: datetime
-        id: 457759871937748
-      keywords: []
-    - name: wit$distance
-      id: 535a80ff-e693-40c1-b67e-6f3e8e7144b8
-      lookups: []
-      roles:
-      - name: distance
-        id: 376395644039832
-      keywords: []
-    - name: wit$duration
-      id: 535a80fb-4be9-4991-a48e-8b2ca4ef6e54
-      lookups: []
-      roles:
-      - name: duration
-        id: 4245444588888025
-      keywords: []
-    - name: wit$email
-      id: 535a8107-7041-417d-b500-670b30d5267e
-      lookups: []
-      roles:
-      - name: email
-        id: 990197371827121
-      keywords: []
-    - name: wit$location
-      id: 535a80ff-6399-4653-8b2a-c770dd014965
-      lookups: []
-      roles:
-      - name: location
-        id: 699151467676773
-      keywords: []
-    - name: wit$phone_number
-      id: 535a810c-3885-41fe-a36f-3adfff96d72c
-      lookups: []
-      roles:
-      - name: phone_number
-        id: 535400004231868
-      keywords: []
-    - name: wit$quantity
-      id: 53d850ab-b009-4da5-9201-180aa916c5d4
-      lookups: []
-      roles:
-      - name: quantity
-        id: 390632932585329
-      keywords: []
-    - name: wit$temperature
-      id: 535a80f3-766b-49e7-bfb9-f4dedafc10aa
-      lookups: []
-      roles:
-      - name: temperature
-        id: 603855104116898
-      keywords: []
-    - name: wit$url
-      id: 535a80e6-23ec-43de-9c60-ed1d7f450157
-      lookups: []
-      roles:
-      - name: url
-        id: 2978877842431482
-      keywords: []
-    - name: wit$volume
-      id: 5a0cd7ec-754d-4ad5-abfa-413275a5f674
-      lookups: []
-      roles:
-      - name: volume
-        id: 358779385927032
-      keywords: []
+    entities: []
     traits:
     - name: wit$bye
       id: 5900cc2e-09ed-4764-800c-11e7566acfac
@@ -874,7 +797,7 @@ MonoBehaviour:
   - Oculus.Voice.Demo, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Meta.WitAi.Samples, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   relaxedResolution: 0
-  _lastRefreshSeconds: 1717832663.661713
+  _lastRefreshSeconds: 1717843501.248291
 --- !u!114 &3501191927413153281
 MonoBehaviour:
   m_ObjectHideFlags: 0
