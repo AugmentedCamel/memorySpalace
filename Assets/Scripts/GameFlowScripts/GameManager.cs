@@ -23,7 +23,8 @@ public class GameManager : MonoBehaviour
     public bool gameLaunched = false;
     
     [SerializeField] private GameBaseAnchorController _gameBaseAnchorController;
-    [SerializeField] private MenuController _menuController;
+    [SerializeField] private MenuController _menuController; //this is for hand menu
+    
     private GameState _lastGameState = GameState.Debug;
     
     // Start is called before the first frame update
@@ -145,7 +146,6 @@ public class GameManager : MonoBehaviour
     {
         //start the game
         _menuController.ActivateMenuNeutral();
-
         //should hide all bubbles
     }
     
