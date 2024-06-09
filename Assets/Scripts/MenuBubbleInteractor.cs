@@ -18,7 +18,7 @@ public class MenuBubbleInteractor : MonoBehaviour
     // [SerializeField] private TextMeshPro 
     
     private Coroutine _activeCoroutine = null;
-    
+    private bool _isMaterialLocked = false;
     
     public float triggerTimer;
     // Start is called before the first frame update
@@ -28,7 +28,34 @@ public class MenuBubbleInteractor : MonoBehaviour
         _startmaterial = _renderer.material;
         
     }
-
+    
+    public void SetMaterialManual(int materialIndex)
+    {
+        switch (materialIndex)
+        {
+            case 0:
+                SetMaterial(_startmaterial);
+                break;
+            case 1:
+                SetMaterial(_hovermaterial);
+                break;
+            case 2:
+                SetMaterial(_pressedmaterial);
+                break;
+        }
+    }
+    
+    public void UnlockMaterial()
+    {
+        SetMaterial(_startmaterial); //back to default
+        _isMaterialLocked = false;
+    }
+    
+    private void SetMaterial(Material material) //only used for manual setting
+    {
+        _renderer.material = material;
+        _isMaterialLocked = true;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -60,14 +87,14 @@ public class MenuBubbleInteractor : MonoBehaviour
         if (_activeCoroutine == null)
         {
             _activeCoroutine = StartCoroutine(TriggerTimer());
-            _renderer.material = _hovermaterial;
+            if (!_isMaterialLocked) _renderer.material = _hovermaterial;
         }
     }
 
     private void ButtonActivated() //pressed
     {
         //Debug.Log("Button Activated");
-        _renderer.material = _pressedmaterial;
+        if (!_isMaterialLocked) _renderer.material = _pressedmaterial;
         _activeCoroutine = StartCoroutine(DeactivateButton());
         
         _bubbleEventLauncher.LaunchBubbleEvent();
@@ -78,7 +105,7 @@ public class MenuBubbleInteractor : MonoBehaviour
     {
         StopAllCoroutines();
         _activeCoroutine = null;
-        _renderer.material = _startmaterial;
+        if (!_isMaterialLocked) _renderer.material = _startmaterial;
         onTriggerEExitedEvent.Invoke();
     }
     
