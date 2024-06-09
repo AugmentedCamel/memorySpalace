@@ -24927,6 +24927,41 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 1847616013}
+    - target: {fileID: 5880104483982520186, guid: 2aa0db9c01237c441a63e28dc29bca53,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880104483982520186, guid: 2aa0db9c01237c441a63e28dc29bca53,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880104483982520186, guid: 2aa0db9c01237c441a63e28dc29bca53,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 4978215685867357052}
+    - target: {fileID: 5880104483982520186, guid: 2aa0db9c01237c441a63e28dc29bca53,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880104483982520186, guid: 2aa0db9c01237c441a63e28dc29bca53,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnBubbleActivated
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880104483982520186, guid: 2aa0db9c01237c441a63e28dc29bca53,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: BubbleManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880104483982520186, guid: 2aa0db9c01237c441a63e28dc29bca53,
+        type: 3}
+      propertyPath: bubbleEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6266284863179503834, guid: 2aa0db9c01237c441a63e28dc29bca53,
         type: 3}
       propertyPath: _audioSource
@@ -24987,7 +25022,6 @@ MonoBehaviour:
   _bubbleFrames: []
   _bubbleSpacing: 0.2
   _bubbleParent: {fileID: 4978215685867357050}
-  _activeBubbleScale: {x: 1.2, y: 1.2, z: 1.2}
 --- !u!114 &5108847710856542505
 MonoBehaviour:
   m_ObjectHideFlags: 0

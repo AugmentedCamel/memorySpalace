@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
+[ExecuteInEditMode]
 public class BubbleManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _bubbleFrames = new List<GameObject>();  // List to store bubbles
     [SerializeField] private float _bubbleSpacing = 1.0f;  // Spacing between bubbles
     [SerializeField] private Transform _bubbleParent;      // Parent transform to hold bubbles
-    [SerializeField] private Vector3 _activeBubbleScale = new Vector3(1.2f, 1.2f, 1.2f);  // Scale for active bubbles
 
     // Method to add a bubble
     [Button("Add Bubble")]
@@ -24,7 +27,7 @@ public class BubbleManager : MonoBehaviour
         Debug.Log($"Bubble added: {newBubble.name}");
         UpdateBubblePositions();
     }
-    
+
     // Method to remove the last added bubble
     [Button("Remove Last Bubble")]
     public void RemoveLastBubble()
@@ -37,7 +40,7 @@ public class BubbleManager : MonoBehaviour
                 string bubbleName = bubble.name; // Store the name before destroying
                 _bubbleFrames.RemoveAt(_bubbleFrames.Count - 1);
                 Debug.Log($"Removing bubble: {bubbleName}");
-                
+
                 if (Application.isPlaying)
                 {
                     Destroy(bubble);
@@ -68,6 +71,7 @@ public class BubbleManager : MonoBehaviour
     // Method to clean up null references from the list
     private void CleanUpNullReferences()
     {
+        Debug.Log("Cleaning up null references...");
         for (int i = _bubbleFrames.Count - 1; i >= 0; i--)
         {
             if (_bubbleFrames[i] == null)
@@ -76,54 +80,6 @@ public class BubbleManager : MonoBehaviour
                 _bubbleFrames.RemoveAt(i);
             }
         }
-    }
-
-    // Method called when the script is destroyed to clean up missing references
-    private void OnDestroy()
-    {
-        CleanUpNullReferences();
-    }
-
-    // Method to handle when a bubble is destroyed manually
-    private void Update()
-    {
-        CleanUpNullReferences();
-    }
-
-    // Method to activate a bubble
-    public void ActivateBubble(GameObject bubble)
-    {
-        if (_bubbleFrames.Contains(bubble))
-        {
-            bubble.SetActive(true);
-            bubble.transform.localScale = _activeBubbleScale;
-            Debug.Log($"Bubble activated: {bubble.name}");
-            // Add visual effects
-        }
-    }
-
-    // Method to deactivate a bubble
-    public void DeactivateBubble(GameObject bubble)
-    {
-        if (_bubbleFrames.Contains(bubble))
-        {
-            bubble.SetActive(false);
-            bubble.transform.localScale = Vector3.one;  // Reset scale
-            Debug.Log($"Bubble deactivated: {bubble.name}");
-            // Add visual effects
-        }
-    }
-
-    // Method to handle external activation event
-    public void OnBubbleActivated(GameObject bubble)
-    {
-        ActivateBubble(bubble);
-    }
-
-    // Method to handle external deactivation event
-    public void OnBubbleDeactivated(GameObject bubble)
-    {
-        DeactivateBubble(bubble);
     }
 
     // Method to update positions of bubbles
@@ -136,14 +92,49 @@ public class BubbleManager : MonoBehaviour
             {
                 _bubbleFrames[i].transform.localPosition = new Vector3(i * _bubbleSpacing, 0, 0);
                 Debug.Log($"Updated position of bubble {i}: {_bubbleFrames[i].name}");
-                // add physics-based interaction or visual connections
             }
         }
     }
 
-    /*// Method to handle underlay logic if needed
-    private void UpdateUnderlay()
+    // Called when the script is enabled
+    private void OnEnable()
     {
-        // logic for underlay management
-    }*/
+        #if UNITY_EDITOR
+        EditorApplication.update += EditorUpdate;
+        #endif
+        CleanUpNullReferences();
+    }
+
+    // Called when the script is disabled
+    private void OnDisable()
+    {
+        #if UNITY_EDITOR
+        EditorApplication.update -= EditorUpdate;
+        #endif
+        CleanUpNullReferences();
+    }
+
+    // Called when a child object is added or removed
+    private void OnTransformChildrenChanged()
+    {
+        CleanUpNullReferences();
+    }
+
+    // Update method for the editor
+    private void EditorUpdate()
+    {
+        if (!Application.isPlaying)
+        {
+            CleanUpNullReferences();
+        }
+    }
+
+    // Method to handle when a bubble is destroyed manually
+    private void Update()
+    {
+        if (Application.isPlaying)
+        {
+            CleanUpNullReferences();
+        }
+    }
 }
