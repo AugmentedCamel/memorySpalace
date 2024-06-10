@@ -15,6 +15,11 @@ public class BubbleMenuGameObjectController : MonoBehaviour
     {
         SetMenuVariant(_gameManager.gameState);
     }
+    
+    public void OnDeActivation() //whenever the bubble becomes inactive
+    {
+        DeactiveBothMenus();
+    }
     private void SetMenuRecordingActive()
     {
         if (_menuVariants != null && _menuVariants.Count > 0)
@@ -68,6 +73,7 @@ public class BubbleMenuGameObjectController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //subscribe to the unity event ongamestatechange event
         
     }
 

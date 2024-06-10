@@ -12,30 +12,38 @@ public class BubbleGameStateController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //subscibe to the game manager event
+        _gameManager.gameStateChangeEvent.AddListener(UpdateToGameState);
     }
     
     public void OnActivation() //whenever the bubble becomes active 
     {
+        /*Debug.Log("BUBBLECONTROLLER Bubble Activated");
         UpdateToGameState();
-        SetMenuVariant(_currentState);
+        SetBubbleVariant(_currentState);
+        */
         
         _inActiveBubble.SetActive(false);
         _activeBubble.SetActive(true);
+        _activeBubble.GetComponent<BubbleMenuGameObjectController>().OnActivation();
+        
+        Debug.Log("BUBBLECONTROLLER Bubble Activated");
     }
     
     public void OnDeActivation() //whenever the bubble becomes inactive
     {
         _inActiveBubble.SetActive(true);
         _activeBubble.SetActive(false);
+        _activeBubble.GetComponent<BubbleMenuGameObjectController>().OnDeActivation();
     }
     
-    public void UpdateToGameState()
+    public void UpdateToGameState() //this should be laumched everytime the game state changes
     {
         _currentState = _gameManager.gameState;
+        SetBubbleVariant(_currentState);
     }
     
-    private void SetMenuVariant(GameManager.GameState state) //this is called from game manager to set the menu variant
+    private void SetBubbleVariant(GameManager.GameState state) //this is called from game manager to set the bubble variant
     {
         _currentState = state;
         switch (state)
@@ -48,9 +56,11 @@ public class BubbleGameStateController : MonoBehaviour
                 break;
             case GameManager.GameState.createNewSequence:
                 SetBubblesInactive();
+                //empty all data and set the bubbles inactive
                 break;
             case GameManager.GameState.TestSequence:
                 SetBubblesInactive();
+                //load in the data from the slot and set the bubbles inactive.
                 break;
             case GameManager.GameState.Debug:
                 
@@ -58,7 +68,7 @@ public class BubbleGameStateController : MonoBehaviour
         }
     }
 
-    private void SetBubblesInactive() //when the game returns to neutral, all the bubbles should become inactive
+    private void SetBubblesInactive() //when the game state chagnes, all the bubbles should become inactive
     {
         _inActiveBubble.SetActive(true);
         _activeBubble.SetActive(false);
