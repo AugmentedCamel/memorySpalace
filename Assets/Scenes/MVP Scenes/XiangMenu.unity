@@ -5015,6 +5015,12 @@ Transform:
   m_Father: {fileID: 1301614075}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &409130751 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6065089426224560391, guid: 3d7c354368fa7434dba9658dae9a4571,
+    type: 3}
+  m_PrefabInstance: {fileID: 1131321409594457625}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &409282580
 GameObject:
   m_ObjectHideFlags: 0
@@ -26398,16 +26404,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6680494658221657847, guid: 3d7c354368fa7434dba9658dae9a4571,
+    - target: {fileID: 7392705153548173890, guid: 3d7c354368fa7434dba9658dae9a4571,
         type: 3}
-      propertyPath: m_margin.z
-      value: 68.71955
-      objectReference: {fileID: 0}
-    - target: {fileID: 8013387455033142915, guid: 3d7c354368fa7434dba9658dae9a4571,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 50.2
-      objectReference: {fileID: 0}
+      propertyPath: _HighScoreSound
+      value: 
+      objectReference: {fileID: 409130751}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

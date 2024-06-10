@@ -17,7 +17,8 @@ public class ScorePanelController : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private float _textUpdateAnimationDuration = 1f;
     [SerializeField] private float _HighScoreUpdateAnimationDuration = 1f;
-    [SerializeField] private GameObject _HighScoreParticleEffect;
+    [SerializeField] private AudioSource _scoreUpdateSound;
+    [SerializeField] private AudioSource _HighScoreSound;
     [SerializeField] private GameObject _regularScoreTitle;
     [SerializeField] private GameObject _highScoreAchievedTitle;
     [SerializeField] private RectTransform _scoreTextRectTransformBackup;
@@ -29,6 +30,8 @@ public class ScorePanelController : MonoBehaviour
         {
             _highScoreText.text = "---";
         }
+
+        _scoreText.text = "0";
         _regularScoreTitle.SetActive(true);
         _highScoreAchievedTitle.SetActive(false);
     }
@@ -75,12 +78,26 @@ public class ScorePanelController : MonoBehaviour
             }
            
         });
+        // Adjust audio properties
+        DOTween.To(() => _scoreUpdateSound.volume, x => _scoreUpdateSound.volume = x, 1, _textUpdateAnimationDuration);
+        // Optionally, play a sound if it's not already playing
+        if (!_scoreUpdateSound.isPlaying)
+        {
+            _scoreUpdateSound.Play();
+        }
+        // scale sound speed based on animation duration
+        _scoreUpdateSound.pitch = 1 / _textUpdateAnimationDuration;
 
     }
     
     [Button]
     public void OnAchieveHighScore(int score)
     {
+        if (!_HighScoreSound.isPlaying)
+        {
+            _HighScoreSound.Play();
+        }
+       
         _regularScoreTitle.SetActive(false);
         _highScoreAchievedTitle.SetActive(true);
         GameObject scoreTextCopy = Instantiate(_scoreText.gameObject, _scoreText.transform.position, _scoreText.transform.rotation, _scoreText.transform.parent);
