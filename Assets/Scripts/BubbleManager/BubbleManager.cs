@@ -26,10 +26,7 @@ public class BubbleManager : MonoBehaviour
 
         GameObject newBubble = Instantiate(_bubblePrefab, _bubbleParent);
         _bubbleFrames.Add(newBubble);
-        //newBubble.GetComponent<BubbleData>().LoadEmptyBubble();
         newBubble.GetComponent<BubbleGameStateController>().LoadBubbleEmpty();
-        //add functionality to load with data
-
         Debug.Log($"Bubble added: {newBubble.name}");
         UpdateBubblePositions();
     }
@@ -58,7 +55,6 @@ public class BubbleManager : MonoBehaviour
                     Debug.Log($"Bubble removed immediately: {bubbleName}");
                 }
 
-                // Clean up the list before updating positions
                 CleanUpNullReferences();
                 UpdateBubblePositions();
             }
@@ -77,7 +73,6 @@ public class BubbleManager : MonoBehaviour
     // Method to clean up null references from the list
     private void CleanUpNullReferences()
     {
-        //Debug.Log("Cleaning up null references...");
         for (int i = _bubbleFrames.Count - 1; i >= 0; i--)
         {
             if (_bubbleFrames[i] == null)
@@ -101,8 +96,8 @@ public class BubbleManager : MonoBehaviour
             {
                 float angle = i * Mathf.PI * 2 / _bubbleFrames.Count;
                 float x = Mathf.Cos(angle) * radius;
-                float y = Mathf.Sin(angle) * radius;
-                _bubbleFrames[i].transform.localPosition = new Vector3(x, y, 0);
+                float z = Mathf.Sin(angle) * radius;
+                _bubbleFrames[i].transform.localPosition = new Vector3(x, 0, z);
                 Debug.Log($"Updated position of bubble {i}: {_bubbleFrames[i].name}");
             }
         }
