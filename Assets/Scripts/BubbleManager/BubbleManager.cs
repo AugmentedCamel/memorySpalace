@@ -12,7 +12,8 @@ public class BubbleManager : MonoBehaviour
     [SerializeField] private float _bubbleSpacing = 1.0f;  // Spacing between bubbles
     [SerializeField] private Transform _bubbleParent;      // Parent transform to hold bubbles
     [SerializeField] private GameObject _bubblePrefab;     // Prefab to instantiate bubbles
-    
+    [SerializeField] private Transform _centerPoint;       // Center point to look at the camera
+
     // Method to add a bubble
     [Button("Add Bubble")]
     public void AddBubble()
@@ -28,7 +29,7 @@ public class BubbleManager : MonoBehaviour
         //newBubble.GetComponent<BubbleData>().LoadEmptyBubble();
         newBubble.GetComponent<BubbleGameStateController>().LoadBubbleEmpty();
         //add functionality to load with data
-        
+
         Debug.Log($"Bubble added: {newBubble.name}");
         UpdateBubblePositions();
     }
@@ -86,38 +87,52 @@ public class BubbleManager : MonoBehaviour
             }
         }
     }
-    
-    //method to reset the prefab to empty
-    
-    // Method to update positions of bubbles
+
+    // Method to update positions of bubbles in a spherical pattern
     private void UpdateBubblePositions()
     {
         CleanUpNullReferences();
+
+        float radius = _bubbleFrames.Count * _bubbleSpacing / (2 * Mathf.PI);
+
         for (int i = 0; i < _bubbleFrames.Count; i++)
         {
             if (_bubbleFrames[i] != null)
             {
-                _bubbleFrames[i].transform.localPosition = new Vector3(i * _bubbleSpacing, 0, 0);
+                float angle = i * Mathf.PI * 2 / _bubbleFrames.Count;
+                float x = Mathf.Cos(angle) * radius;
+                float y = Mathf.Sin(angle) * radius;
+                _bubbleFrames[i].transform.localPosition = new Vector3(x, y, 0);
                 Debug.Log($"Updated position of bubble {i}: {_bubbleFrames[i].name}");
             }
+        }
+        UpdateCenterPoint();
+    }
+
+    // Method to update the center point to look at the camera
+    private void UpdateCenterPoint()
+    {
+        if (_centerPoint != null && Camera.main != null)
+        {
+            _centerPoint.LookAt(Camera.main.transform);
         }
     }
 
     // Called when the script is enabled
     private void OnEnable()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         EditorApplication.update += EditorUpdate;
-        #endif
+#endif
         CleanUpNullReferences();
     }
 
     // Called when the script is disabled
     private void OnDisable()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         EditorApplication.update -= EditorUpdate;
-        #endif
+#endif
         CleanUpNullReferences();
     }
 
@@ -133,6 +148,7 @@ public class BubbleManager : MonoBehaviour
         if (!Application.isPlaying)
         {
             CleanUpNullReferences();
+            UpdateBubblePositions();
         }
     }
 
