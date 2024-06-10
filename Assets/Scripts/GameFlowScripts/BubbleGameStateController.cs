@@ -37,6 +37,13 @@ public class BubbleGameStateController : MonoBehaviour
         _activeBubble.GetComponent<BubbleMenuGameObjectController>().OnDeActivation();
     }
     
+    public void OnAddition() //whenever the bubble is added
+    {
+        _inActiveBubble.SetActive(true);
+        _activeBubble.SetActive(false);
+        //should empty the data 
+        EmptyData();
+    }
     public void UpdateToGameState() //this should be laumched everytime the game state changes
     {
         _currentState = _gameManager.gameState;
