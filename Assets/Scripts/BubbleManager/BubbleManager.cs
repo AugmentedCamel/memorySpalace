@@ -25,6 +25,10 @@ public class BubbleManager : MonoBehaviour
 
         GameObject newBubble = Instantiate(_bubblePrefab, _bubbleParent);
         _bubbleFrames.Add(newBubble);
+        //newBubble.GetComponent<BubbleData>().LoadEmptyBubble();
+        newBubble.GetComponent<BubbleGameStateController>().LoadBubbleEmpty();
+        //add functionality to load with data
+        
         Debug.Log($"Bubble added: {newBubble.name}");
         UpdateBubblePositions();
     }
@@ -82,7 +86,9 @@ public class BubbleManager : MonoBehaviour
             }
         }
     }
-
+    
+    //method to reset the prefab to empty
+    
     // Method to update positions of bubbles
     private void UpdateBubblePositions()
     {

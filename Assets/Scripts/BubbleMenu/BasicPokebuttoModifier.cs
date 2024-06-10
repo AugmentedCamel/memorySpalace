@@ -37,6 +37,12 @@ public class BasicPokebuttoModifier : MonoBehaviour
     
     public void RunButtonDeselected()
     {
+        Invoke("DeselectedAfterDelay", 0.1f);
+        //OnButtonDeselected.Invoke();
+    }
+
+    private void DeselectedAfterDelay()
+    {
         OnButtonDeselected.Invoke();
     }
     

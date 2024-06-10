@@ -15,13 +15,24 @@ public class BubbleGameStateController : MonoBehaviour
         //subscibe to the game manager event
         _gameManager.gameStateChangeEvent.AddListener(UpdateToGameState);
     }
-    
+
+    public void LoadBubbleEmpty()
+    {
+        OnAddition();
+        
+        
+    }
     public void OnActivation() //whenever the bubble becomes active 
     {
         /*Debug.Log("BUBBLECONTROLLER Bubble Activated");
         UpdateToGameState();
         SetBubbleVariant(_currentState);
         */
+        if (_currentState == GameManager.GameState.gameNeutral)
+        {
+            //should not be able to activate bubbles
+            return;
+        }
         
         _inActiveBubble.SetActive(false);
         _activeBubble.SetActive(true);
@@ -80,9 +91,11 @@ public class BubbleGameStateController : MonoBehaviour
         _inActiveBubble.SetActive(true);
         _activeBubble.SetActive(false);
     }
-
+    
+    
     public void EmptyData()
     {
+        GetComponent<BubbleData>().LoadEmptyBubble();
         //should delete the voice memo data
         //should reset the score
         //should delete the 3d object
