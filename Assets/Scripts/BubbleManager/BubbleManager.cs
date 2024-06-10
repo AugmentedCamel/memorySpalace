@@ -12,7 +12,6 @@ public class BubbleManager : MonoBehaviour
     [SerializeField] private float _bubbleSpacing = 1.0f;  // Spacing between bubbles
     [SerializeField] private Transform _bubbleParent;      // Parent transform to hold bubbles
     [SerializeField] private GameObject _bubblePrefab;     // Prefab to instantiate bubbles
-    [SerializeField] private Transform _centerPoint;       // Center point to look at the camera
 
     // Method to add a bubble
     [Button("Add Bubble")]
@@ -83,33 +82,43 @@ public class BubbleManager : MonoBehaviour
         }
     }
 
-    // Method to update positions of bubbles in a spherical pattern
+    // Method to update positions of bubbles around the parent
     private void UpdateBubblePositions()
     {
         CleanUpNullReferences();
 
-        float radius = _bubbleFrames.Count * _bubbleSpacing / (2 * Mathf.PI);
+        float angleStep = 360.0f / _bubbleFrames.Count;
+        float radius = _bubbleSpacing * _bubbleFrames.Count / (2 * Mathf.PI);
 
         for (int i = 0; i < _bubbleFrames.Count; i++)
         {
             if (_bubbleFrames[i] != null)
             {
-                float angle = i * Mathf.PI * 2 / _bubbleFrames.Count;
+                float angle = i * angleStep * Mathf.Deg2Rad;
                 float x = Mathf.Cos(angle) * radius;
                 float z = Mathf.Sin(angle) * radius;
                 _bubbleFrames[i].transform.localPosition = new Vector3(x, 0, z);
                 Debug.Log($"Updated position of bubble {i}: {_bubbleFrames[i].name}");
             }
         }
-        UpdateCenterPoint();
     }
 
-    // Method to update the center point to look at the camera
-    private void UpdateCenterPoint()
+    // Draw gizmo to visualize the bubble circle
+    private void OnDrawGizmos()
     {
-        if (_centerPoint != null && Camera.main != null)
+        if (_bubbleParent == null) return;
+
+        Gizmos.color = Color.green;
+        float radius = _bubbleSpacing * _bubbleFrames.Count / (2 * Mathf.PI);
+        int segments = 100;
+        Vector3 prevPoint = _bubbleParent.position + new Vector3(Mathf.Cos(0) * radius, 0, Mathf.Sin(0) * radius);
+
+        for (int i = 1; i <= segments; i++)
         {
-            _centerPoint.LookAt(Camera.main.transform);
+            float angle = i * Mathf.PI * 2 / segments;
+            Vector3 newPoint = _bubbleParent.position + new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
+            Gizmos.DrawLine(prevPoint, newPoint);
+            prevPoint = newPoint;
         }
     }
 
