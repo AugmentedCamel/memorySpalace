@@ -18,7 +18,16 @@ public class BubbleData : MonoBehaviour
     public string Text { get { return text; } }
     public string Audio { get { return audio; } }
     
-    
+    public BubbleSaveData ToSaveData()
+    {
+        return new BubbleSaveData
+        {
+            slotId = this.slotId,
+            objectString = this.objectString,
+            text = this.text,
+            audio = this.audio
+        };
+    }
 
     public bool IsEmpty
     {

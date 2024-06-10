@@ -13,6 +13,35 @@ public class BubbleManager : MonoBehaviour
     [SerializeField] private Transform _bubbleParent;      // Parent transform to hold bubbles
     [SerializeField] private GameObject _bubblePrefab;     // Prefab to instantiate bubbles
     
+    // Assume you have a list of BubbleData objects
+    [SerializeField] private List<BubbleData> bubbles;
+    
+    public List<BubbleSaveData> SaveAllBubbles()
+    {
+        List<BubbleSaveData> saveDataList = new List<BubbleSaveData>();
+        foreach (var bubble in bubbles)
+        {
+            saveDataList.Add(bubble.ToSaveData());
+        }
+        return saveDataList;
+    }
+
+    public void UpdateBubbleDataList() //this should be called after a new button is added to the list while in recoring mode.
+    {
+        bubbles.Clear();
+        foreach (var bubbleObj in _bubbleFrames)
+        {
+            
+            BubbleData bubbleData = bubbleObj.GetComponent<BubbleData>();
+            if (bubbleData != null)
+            {
+                //check for duplicates
+                
+                bubbles.Add(bubbleData);
+            }
+        }
+    }
+    
     // Method to add a bubble
     [Button("Add Bubble")]
     public void AddBubble()
