@@ -26148,6 +26148,11 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 1847616013}
+    - target: {fileID: 1415161849955911103, guid: 9f335dd0530786649adba65f9fa5f688,
+        type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 55
+      objectReference: {fileID: 0}
     - target: {fileID: 1604278457566332986, guid: 9f335dd0530786649adba65f9fa5f688,
         type: 3}
       propertyPath: _camera
