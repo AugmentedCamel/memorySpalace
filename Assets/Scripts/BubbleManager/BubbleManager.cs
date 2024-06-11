@@ -8,10 +8,44 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class BubbleManager : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _bubbleFrames = new List<GameObject>();  // List to store bubbles
+    [SerializeField] public List<GameObject> _bubbleFrames = new List<GameObject>();  // List to store bubbles
     [SerializeField] private float _bubbleSpacing = 1.0f;  // Spacing between bubbles
     [SerializeField] private Transform _bubbleParent;      // Parent transform to hold bubbles
     [SerializeField] private GameObject _bubblePrefab;     // Prefab to instantiate bubbles
+
+    /// <summary>
+    /// Saves all bubble data from bubbleFrames list.
+    /// </summary>
+    [Button]
+    public void SaveBubbles()
+    {
+        List<BubbleData> bubbblesData = new List<BubbleData>();
+
+        foreach (var bubble in _bubbleFrames)
+        {
+            bubbblesData.Add(bubble.GetComponent<BubbleData>());
+        }
+        
+        SavingSystem.Instance.SaveBubbles(bubbblesData, "UUID+TypeA");
+    }
+
+    /// <summary>
+    /// Loads bubble data from PlayerPref, based on the unique ID and memory slot type. - the clear is not necessary once its only used after the app was quit
+    /// </summary>
+    [Button]
+    public void LoadBubbles()
+    {
+        _bubbleFrames.Clear();
+        SavingSystem.Instance.LoadBubbles(this, "UUID+TypeA");
+    }
+
+    /// <summary>
+    /// Deletes bubble data from PlayerPref.
+    /// </summary>
+    public void DeleteBubbles()
+    {
+        SavingSystem.Instance.DeleteData("UUID+TypeA");
+    }
     
     // Method to add a bubble
     [Button("Add Bubble")]
@@ -24,6 +58,7 @@ public class BubbleManager : MonoBehaviour
         }
 
         GameObject newBubble = Instantiate(_bubblePrefab, _bubbleParent);
+        newBubble.SetActive(true);
         _bubbleFrames.Add(newBubble);
         //newBubble.GetComponent<BubbleData>().LoadEmptyBubble();
         newBubble.GetComponent<BubbleGameStateController>().LoadBubbleEmpty();

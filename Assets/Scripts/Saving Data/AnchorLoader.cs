@@ -26,13 +26,13 @@ public class AnchorLoader : MonoBehaviour
 
     public void LoadAnchorsByUuid()
     {
-        if (!PlayerPrefs.HasKey(SpatialAnchorManager.NumUuidsPlayerPref))
+        if (!PlayerPrefs.HasKey(SavingSystem.NumUuidsPlayerPref))
         {
-            PlayerPrefs.SetInt(SpatialAnchorManager.NumUuidsPlayerPref, 0);
+            PlayerPrefs.SetInt(SavingSystem.NumUuidsPlayerPref, 0);
             
         }
         
-        var playerUuidCount = PlayerPrefs.GetInt(SpatialAnchorManager.NumUuidsPlayerPref);
+        var playerUuidCount = PlayerPrefs.GetInt(SavingSystem.NumUuidsPlayerPref);
         
         if (playerUuidCount == 0)
         {

@@ -146,7 +146,14 @@ public class ObjectBubble : MonoBehaviour
     /// <returns></returns>
     public string GetCurrentObjectString()
     {
-        return _currentlyAssignedObject.Item1;
+        if (_currentlyAssignedObject != null)
+        {
+            return _currentlyAssignedObject.Item1;
+        }
+        else
+        {
+            return "";
+        }
     }
 
     /// <summary>

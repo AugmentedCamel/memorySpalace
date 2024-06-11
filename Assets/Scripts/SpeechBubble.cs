@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,7 +15,7 @@ public class SpeechBubble : MonoBehaviour
     
     // audio source to play the clip
     [SerializeField] private AudioSource _audioSource;
-    
+
     #endregion
 
     #region Private Variables
@@ -177,6 +178,7 @@ public class SpeechBubble : MonoBehaviour
     /// <summary>
     /// Repeats the set AudioClip.
     /// </summary>
+    [Button]
     public void RepeatAudioClip()
     {
         if(_audioClip == null) return;
@@ -213,7 +215,7 @@ public class SpeechBubble : MonoBehaviour
     /// </summary>
     public string GetBubbleText()
     {
-        return _currentString;
+        return _recordedText.text;
     }
 
     /// <summary>
@@ -224,24 +226,50 @@ public class SpeechBubble : MonoBehaviour
         return SpeechToTextManager.Instance.AudioClipToString(_audioClip);
     }
 
+    /// <summary>
+    /// Returns the current AudioClip channels.
+    /// </summary>
+    public int GetAudioClipChannels()
+    {
+        return _audioClip.channels;
+    }
+
+    /// <summary>
+    /// Returns the current AudioClip frequency.
+    /// </summary>
+    public int GetAudioClipFrequency()
+    {
+        return _audioClip.frequency;
+    }
+
+    /// <summary>
+    /// Returns the current AudioClip samples.
+    /// </summary>
+    public int GetAudioClipSamples()
+    {
+        return _audioClip.samples;
+    }
+
     #endregion
 
     #region Public Setters of the Bubble Data
 
     /// <summary>
-    /// 
+    /// Sets the text of the bubble.
     /// </summary>
     public void SetBubbleText(string text)
     {
         _currentString = text;
+        _recordedText.text = _currentString;
     }
 
     /// <summary>
     /// Sets the bubbles audio clip from string.
     /// </summary>
-    public void SetBubbleAudioClipFromString(string audioClipString)
+    public void SetBubbleAudioClipFromString(string audioClipString, int channels, int frequency, int samples)
     {
-        _audioClip = SpeechToTextManager.Instance.StringToAudioClip(audioClipString, _audioClip.name, _audioClip.channels, _audioClip.frequency);
+        _audioClip = SpeechToTextManager.Instance.StringToAudioClip(audioClipString, "Microphone", channels, frequency, samples);
+        _audioSource.clip = _audioClip;
     }
 
     #endregion

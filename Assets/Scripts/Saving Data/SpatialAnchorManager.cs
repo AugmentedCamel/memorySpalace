@@ -14,7 +14,6 @@ public class SpatialAnchorManager : MonoBehaviour
     //[SerializeField] private SpatialAnchorSpawnerBuildingBlock _spatialAnchorSpawner;
     
     [SerializeField] private AnchorLoader _anchorLoader;
-    public const string NumUuidsPlayerPref = "numUuids";
     
     private Canvas _canvas;
     private TextMeshProUGUI _uuidText;
@@ -68,7 +67,7 @@ public class SpatialAnchorManager : MonoBehaviour
             _savedStatusText.text = "Saved";
             Debug.Log($"Anchor {_lastCreatedAnchor.Uuid} saved successfully.");
             
-            SaveUuidToPlayerPrefs(_lastCreatedAnchor.Uuid);
+            SavingSystem.Instance.SaveUuidToPlayerPrefs(_lastCreatedAnchor.Uuid);
         }
         else
         {
@@ -81,18 +80,6 @@ public class SpatialAnchorManager : MonoBehaviour
     {
         
         SaveLastCreatedAnchorAsync();
-    }
-
-    void SaveUuidToPlayerPrefs(Guid uuid)
-    {
-        if (!PlayerPrefs.HasKey(NumUuidsPlayerPref))
-        {
-            PlayerPrefs.SetInt(NumUuidsPlayerPref, 0);
-        }
-        
-        int playerNumUuids = PlayerPrefs.GetInt(NumUuidsPlayerPref);
-        PlayerPrefs.SetString("uuid" + playerNumUuids, uuid.ToString());
-        PlayerPrefs.SetInt(NumUuidsPlayerPref, ++playerNumUuids);
     }
     
     [Button]
@@ -121,7 +108,7 @@ public class SpatialAnchorManager : MonoBehaviour
         }
         
         _anchors.Clear();
-        ClearAllUuidsFromPlayerPrefs();
+        SavingSystem.Instance.ClearAllUuidsFromPlayerPrefs();
     }
 
     async void EraseSavedAnchors(OVRSpatialAnchor anchor)
@@ -150,22 +137,6 @@ public class SpatialAnchorManager : MonoBehaviour
         Destroy(anchor.gameObject);
         Debug.Log("Destroyed anchor");
     }
-    
-    private void ClearAllUuidsFromPlayerPrefs()
-    {
-        if (PlayerPrefs.HasKey(NumUuidsPlayerPref))
-        {
-            int playerNumUuids = PlayerPrefs.GetInt(NumUuidsPlayerPref);
-            for (int i = 0; i < playerNumUuids; i++)
-            {
-                PlayerPrefs.DeleteKey("uuid" + i);
-            }
-            PlayerPrefs.DeleteKey(NumUuidsPlayerPref);
-            PlayerPrefs.Save();
-        }
-    }
-    
-    
 
     [Button]
     public void LoadSavedAnchors()

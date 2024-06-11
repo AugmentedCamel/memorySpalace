@@ -230,6 +230,7 @@ public class SpeechToTextManager : MonoBehaviour
     /// </summary>
     public string AudioClipToString(AudioClip clip)
     {
+        Debug.Log(clip);
         float[] samples = new float[clip.samples * clip.channels];
         clip.GetData(samples, 0);
 
@@ -242,15 +243,15 @@ public class SpeechToTextManager : MonoBehaviour
     /// <summary>
     /// Converts string to AudioClip.
     /// </summary>
-    public AudioClip StringToAudioClip(string base64, string name, int channels, int frequency)
+    public AudioClip StringToAudioClip(string base64, string name, int channels, int frequency, int samples)
     {
         byte[] byteArray = Convert.FromBase64String(base64);
 
-        float[] samples = new float[byteArray.Length / sizeof(float)];
-        Buffer.BlockCopy(byteArray, 0, samples, 0, byteArray.Length);
+        float[] floatArray = new float[byteArray.Length / sizeof(float)];
+        Buffer.BlockCopy(byteArray, 0, floatArray, 0, byteArray.Length);
 
-        AudioClip clip = AudioClip.Create(name, samples.Length / channels, channels, frequency, false);
-        clip.SetData(samples, 0);
+        AudioClip clip = AudioClip.Create(name, samples, channels, frequency, false);
+        clip.SetData(floatArray, 0);
         return clip;
     }
     

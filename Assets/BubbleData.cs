@@ -7,6 +7,9 @@ using UnityEngine;
 public class BubbleData : MonoBehaviour
 {
     [SerializeField] private SpeechBubble _speechBubble;
+    [SerializeField] private ObjectBubble _objectBubble;
+    [SerializeField] private BubbleMenuController _bubbleMenuController;
+    [SerializeField] private TextDisplayer _textDisplayer;
     
     [SerializeField] private int slotId;
     [SerializeField] private string objectString;
@@ -17,9 +20,37 @@ public class BubbleData : MonoBehaviour
     public string ObjectString { get { return objectString; } }
     public string Text { get { return text; } }
     public string Audio { get { return audio; } }
-    
-    
 
+    /// <summary>
+    /// Returns all the data the bubble has in type of BubbleSaveData.
+    /// </summary>
+    public BubbleSaveData GetBubbleData()
+    {
+        return new BubbleSaveData(_speechBubble.GetBubbleText(), _speechBubble.GetBubbleAudioClipAsString(), _objectBubble.GetCurrentObjectString(), 
+            _speechBubble.GetAudioClipChannels(), _speechBubble.GetAudioClipFrequency(), _speechBubble.GetAudioClipSamples());
+    }
+
+    /// <summary>
+    /// Sets all the data of the bubble from passed BubbleSavedData.
+    /// </summary>
+    public void SetBubbleData(BubbleSaveData bubbleData)
+    {
+        _speechBubble.SetBubbleText(bubbleData.text);
+        _speechBubble.SetBubbleAudioClipFromString(bubbleData.audioClipString, bubbleData.channels, bubbleData.frequency, bubbleData.lengthSamples);
+        Debug.Log(bubbleData.objectNames);
+        _objectBubble.AssignObjectFromString(bubbleData.objectNames);
+
+        text = bubbleData.text;
+        objectString = bubbleData.objectNames;
+        
+        _textDisplayer.UpdateText();
+        // gameObject.GetComponent<BubbleGameStateController>().OnActivation();
+        // _bubbleMenuController.ToPage(2);
+    }
+
+    
+    
+    
     public bool IsEmpty
     {
         get { return slotId == 0 && string.IsNullOrEmpty(objectString) && string.IsNullOrEmpty(text) && string.IsNullOrEmpty(audio); }

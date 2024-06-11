@@ -75,7 +75,8 @@ public class ObjectsManager : MonoBehaviour
     /// </summary>
     public void RemoveObjectAtIndex(int index)
     {
-        _objects.Remove(_objects[index]);
+        //TODO UNCOMMENT AFTER FINISHING THE SAVING
+        // _objects.Remove(_objects[index]);
     }
     
     /// <summary>
@@ -83,7 +84,8 @@ public class ObjectsManager : MonoBehaviour
     /// </summary>
     public void RemoveObject(GameObject obj)
     {
-        _objects.Remove(obj);
+        //TODO UNCOMMENT AFTER FINISHING THE SAVING
+        // _objects.Remove(obj);
     }
 
     /// <summary>
@@ -91,7 +93,8 @@ public class ObjectsManager : MonoBehaviour
     /// </summary>
     public void AddObject(GameObject obj)
     {
-        _objects.Add(obj);
+        //TODO UNCOMMENT AFTER FINISHING THE SAVING
+        // _objects.Add(obj);
     }
 
     #endregion
