@@ -32,16 +32,7 @@ public class DefaultTrainMenuPicker : MonoBehaviour
 
     private void Update()
     {
-        if (_trainingHandMenu._trainMenuOpened)
-        {
-            PickTrain();
-            convertToDefault = false;
-        }
-        else
-        {
-            PickDefault();
-            convertToTrain = false;
-        }
+      
         
         
     }
