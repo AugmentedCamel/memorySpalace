@@ -4,6 +4,9 @@ using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using Newtonsoft.Json.Converters;
+using UnityEngine.UI;
+
 public class ScorePanelController : MonoBehaviour
 {
     
@@ -12,16 +15,20 @@ public class ScorePanelController : MonoBehaviour
     [SerializeField] private int _highScore;
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _highScoreText;
-    
-    
+    [SerializeField] private Slider _scoreSlider;
+    [SerializeField] private int highestScore;
+    [SerializeField] private Color under50Color = Color.red;
+    [SerializeField] private Color under75Color = Color.yellow; 
+    [SerializeField] private Color under100Color = Color.cyan;
+    [SerializeField] private Image _scoreFillImage;
     [Header("Animation")]
     [SerializeField] private float _textUpdateAnimationDuration = 1f;
     [SerializeField] private float _HighScoreUpdateAnimationDuration = 1f;
     [SerializeField] private AudioSource _scoreUpdateSound;
     [SerializeField] private AudioSource _HighScoreSound;
-    [SerializeField] private GameObject _regularScoreTitle;
     [SerializeField] private GameObject _highScoreAchievedTitle;
     [SerializeField] private RectTransform _scoreTextRectTransformBackup;
+    
     private bool hasHighScore = false;
     // Start is called before the first frame update
     void Start()
@@ -32,8 +39,8 @@ public class ScorePanelController : MonoBehaviour
         }
 
         _scoreText.text = "0";
-        _regularScoreTitle.SetActive(true);
         _highScoreAchievedTitle.SetActive(false);
+        
     }
 
     // Update is called once per frame
@@ -45,8 +52,32 @@ public class ScorePanelController : MonoBehaviour
     [Button]
     public void SetScore(int score)
     {
+        if (score > 100)
+        {
+            score = 100;
+        }
         _score = score;
         _scoreText.text = _score.ToString();
+        _scoreSlider.value = _score;
+        
+        
+    }
+
+    [Button]
+    public void SetColorBasedOnscore(int score)
+    {
+        if (score < 50)
+        {
+            _scoreFillImage.color = under50Color;
+        }
+        else if (score < 75)
+        {
+            _scoreFillImage.color = under75Color;
+        }
+        else if (score <= 100)
+        {
+            _scoreFillImage.color = under100Color;
+        }
     }
     [Button]
     public void SetHighScore(int highscore)
@@ -58,13 +89,19 @@ public class ScorePanelController : MonoBehaviour
     [Button] 
     public void SetScoreWithAnimation(int score)
     {
+        _textUpdateAnimationDuration = (float)score / 50 * _textUpdateAnimationDuration;
+        if (score > 100)
+        {
+            score = 100;
+        }
         int currentScore = 0;
         DOTween.To(() => currentScore, x => currentScore = x, score, _textUpdateAnimationDuration)
             .OnUpdate(() => _scoreText.text = currentScore.ToString())
             .SetEase(Ease.OutQuad);
-        _scoreText.transform.DOScale(1.5f, _textUpdateAnimationDuration).OnComplete(() =>
+        float originalFontSize = _scoreText.fontSize;
+        DOTween.To(() => _scoreText.fontSize, x => _scoreText.fontSize = (float) x, originalFontSize * 1.5, _textUpdateAnimationDuration).OnComplete(() =>
         {
-            _scoreText.transform.DOScale(1f, _textUpdateAnimationDuration);
+            DOTween.To(() => _scoreText.fontSize, x => _scoreText.fontSize = x, originalFontSize, _textUpdateAnimationDuration / 2);
             if (hasHighScore)
             {
                 if (score > _highScore)
@@ -76,8 +113,11 @@ public class ScorePanelController : MonoBehaviour
             {
                 OnAchieveHighScore(score);
             }
-           
         });
+      
+        int currentPercentage = 0;
+        DOTween.To(() => currentPercentage, x => _scoreSlider.value = x, score, _textUpdateAnimationDuration)
+            .OnUpdate(() => SetColorBasedOnscore((int) _scoreSlider.value));
         // Adjust audio properties
         DOTween.To(() => _scoreUpdateSound.volume, x => _scoreUpdateSound.volume = x, 1, _textUpdateAnimationDuration);
         // Optionally, play a sound if it's not already playing
@@ -98,7 +138,6 @@ public class ScorePanelController : MonoBehaviour
             _HighScoreSound.Play();
         }
        
-        _regularScoreTitle.SetActive(false);
         _highScoreAchievedTitle.SetActive(true);
         GameObject scoreTextCopy = Instantiate(_scoreText.gameObject, _scoreText.transform.position, _scoreText.transform.rotation, _scoreText.transform.parent);
         RectTransform scoreRect = scoreTextCopy.GetComponent<RectTransform>();
@@ -108,7 +147,6 @@ public class ScorePanelController : MonoBehaviour
         {
             _highScoreText.text = score.ToString();
             scoreTextCopy.transform.localPosition = _scoreTextRectTransformBackup.localPosition;
-            _regularScoreTitle.SetActive(true);
             _highScoreAchievedTitle.SetActive(false);
         });
         // adjust scale 
