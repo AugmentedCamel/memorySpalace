@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6126675705914308386
 MonoBehaviour:
@@ -44,4 +44,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d89b78799d1b664d9f9b52ba7e0bc3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds: []
+  sounds:
+  - name: bubblepop
+    clip: {fileID: 8300000, guid: 56958e7990ef1404db4ad35eb98b18f4, type: 3}
+  - name: saveanchor
+    clip: {fileID: 8300000, guid: e4443c95109dd8b438a853b6ac982fea, type: 3}
+  - name: bubble_appear
+    clip: {fileID: 8300000, guid: 13458c2448eaf44409c0ba5c9bd08697, type: 3}
+  - name: hover_finger_in
+    clip: {fileID: 8300000, guid: 7d4aa9f4adfd31748919f0f41740e71c, type: 3}
+  - name: create_bubble_confirm
+    clip: {fileID: 8300000, guid: 9a68d083b9b394c488b266d62a4d08bf, type: 3}
+  - name: menu_pop_up
+    clip: {fileID: 8300000, guid: c191a318bf9bc944580838c70af341ee, type: 3}
+  - name: menu_close
+    clip: {fileID: 8300000, guid: 2750ddbb4d84b534ba3ebf88ed3dda88, type: 3}
+  - name: bubble_activated
+    clip: {fileID: 8300000, guid: dde91c20029e9334483bbfc64144e8a3, type: 3}
+  - name: record_button_press
+    clip: {fileID: 8300000, guid: d8f46ea2334b010428738382a3589f69, type: 3}
+  - name: record_stop_press
+    clip: {fileID: 8300000, guid: c86947ac5d1cc6a4b88ffa3fda8b87b1, type: 3}
+  - name: show_text_press
+    clip: {fileID: 8300000, guid: e51bbd7a10eeb4e42b11a4f2e70aaa84, type: 3}
+  - name: confirm
+    clip: {fileID: 8300000, guid: 0d041b2c4c5c32e4a875e83c914ada27, type: 3}
+  - name: error
+    clip: {fileID: 8300000, guid: d737367b9569e4f448e5024b792ca62e, type: 3}

@@ -13,6 +13,7 @@ public class BubbleManager : MonoBehaviour
     [SerializeField] private Transform _bubbleParent;      // Parent transform to hold bubbles
     [SerializeField] private GameObject _bubblePrefab;     // Prefab to instantiate bubbles
 
+
     /// <summary>
     /// Saves all bubble data from bubbleFrames list.
     /// </summary>
@@ -48,6 +49,8 @@ public class BubbleManager : MonoBehaviour
         SavingSystem.Instance.DeleteData("UUID+TypeA");
     }
     
+
+
     // Method to add a bubble
     [Button("Add Bubble")]
     public void AddBubble()
@@ -61,12 +64,12 @@ public class BubbleManager : MonoBehaviour
         GameObject newBubble = Instantiate(_bubblePrefab, _bubbleParent);
         newBubble.SetActive(true);
         _bubbleFrames.Add(newBubble);
-        //newBubble.GetComponent<BubbleData>().LoadEmptyBubble();
         newBubble.GetComponent<BubbleGameStateController>().LoadBubbleEmpty();
+
         
         newBubble.GetComponent<BubbleGameStateController>().OnActivation();
         //add functionality to load with data
-        
+
         Debug.Log($"Bubble added: {newBubble.name}");
         UpdateBubblePositions();
     }
@@ -103,7 +106,6 @@ public class BubbleManager : MonoBehaviour
                     Debug.Log($"Bubble removed immediately: {bubbleName}");
                 }
 
-                // Clean up the list before updating positions
                 CleanUpNullReferences();
                 UpdateBubblePositions();
             }
@@ -122,7 +124,6 @@ public class BubbleManager : MonoBehaviour
     // Method to clean up null references from the list
     private void CleanUpNullReferences()
     {
-        //Debug.Log("Cleaning up null references...");
         for (int i = _bubbleFrames.Count - 1; i >= 0; i--)
         {
             if (_bubbleFrames[i] == null)
@@ -132,38 +133,62 @@ public class BubbleManager : MonoBehaviour
             }
         }
     }
-    
-    //method to reset the prefab to empty
-    
-    // Method to update positions of bubbles
+
+    // Method to update positions of bubbles around the parent
     private void UpdateBubblePositions()
     {
         CleanUpNullReferences();
+
+        float angleStep = 360.0f / _bubbleFrames.Count;
+        float radius = _bubbleSpacing * _bubbleFrames.Count / (2 * Mathf.PI);
+
         for (int i = 0; i < _bubbleFrames.Count; i++)
         {
             if (_bubbleFrames[i] != null)
             {
-                _bubbleFrames[i].transform.localPosition = new Vector3(i * _bubbleSpacing, 0, 0);
+                float angle = i * angleStep * Mathf.Deg2Rad;
+                float x = Mathf.Cos(angle) * radius;
+                float z = Mathf.Sin(angle) * radius;
+                _bubbleFrames[i].transform.localPosition = new Vector3(x, 0, z);
                 Debug.Log($"Updated position of bubble {i}: {_bubbleFrames[i].name}");
             }
+        }
+    }
+
+    // Draw gizmo to visualize the bubble circle
+    private void OnDrawGizmos()
+    {
+        if (_bubbleParent == null) return;
+
+        Gizmos.color = Color.green;
+        float radius = _bubbleSpacing * _bubbleFrames.Count / (2 * Mathf.PI);
+        int segments = 100;
+        Vector3 prevPoint = _bubbleParent.position + new Vector3(Mathf.Cos(0) * radius, 0, Mathf.Sin(0) * radius);
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float angle = i * Mathf.PI * 2 / segments;
+            Vector3 newPoint = _bubbleParent.position + new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
+            Gizmos.DrawLine(prevPoint, newPoint);
+            prevPoint = newPoint;
         }
     }
 
     // Called when the script is enabled
     private void OnEnable()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         EditorApplication.update += EditorUpdate;
-        #endif
+#endif
         CleanUpNullReferences();
     }
 
     // Called when the script is disabled
     private void OnDisable()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         EditorApplication.update -= EditorUpdate;
-        #endif
+#endif
         CleanUpNullReferences();
     }
 
@@ -179,6 +204,7 @@ public class BubbleManager : MonoBehaviour
         if (!Application.isPlaying)
         {
             CleanUpNullReferences();
+            UpdateBubblePositions();
         }
     }
 
