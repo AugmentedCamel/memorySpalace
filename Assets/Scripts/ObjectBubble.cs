@@ -23,7 +23,15 @@ public class ObjectBubble : MonoBehaviour
     #endregion
 
     #region Private Methods for 3D Object
-    
+
+    private void OnEnable()
+    {
+        if (_animation == null && _currentlyAssignedObject != null)
+        {
+            _animation = StartCoroutine(AnimateScale(_currentlyAssignedObject.Item2));
+        }
+    }
+
     /// <summary>
     /// Sets the proper object transform properties when assigning object.
     /// Sets proper parent, rotation and size.

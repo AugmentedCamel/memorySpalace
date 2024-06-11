@@ -16,6 +16,8 @@ public class SpeechBubble : MonoBehaviour
     // audio source to play the clip
     [SerializeField] private AudioSource _audioSource;
 
+    [SerializeField] private ObjectBubble _objectBubble;
+
     #endregion
 
     #region Private Variables
@@ -92,6 +94,8 @@ public class SpeechBubble : MonoBehaviour
     /// </summary>
     private void StopRecordings()
     {
+        _currentString = _recordedText.text;
+        
         SpeechToTextManager.Instance.StopRecording();
         
         _speechTextEvent.RemoveAllListeners();
@@ -140,6 +144,8 @@ public class SpeechBubble : MonoBehaviour
     /// </summary>
     public void StopRecording()
     {
+        _objectBubble.AssignObject();
+        
         StopRecordings();
     }
 
@@ -163,7 +169,7 @@ public class SpeechBubble : MonoBehaviour
     /// </summary>
     public void ShowTranscribedText()
     {
-        _recordedText.text = _currentString;
+        // _recordedText.text = _currentString;
         _recordedText.gameObject.SetActive(true);
     }
 

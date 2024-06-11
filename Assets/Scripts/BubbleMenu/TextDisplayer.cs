@@ -22,7 +22,12 @@ public class TextDisplayer : MonoBehaviour
     {
        
     }
-    
+
+    private void OnEnable()
+    {
+        UpdateText();
+    }
+
 
     // Call this method whenever the text is updated
     public void UpdateText()

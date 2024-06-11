@@ -37,6 +37,7 @@ public class BubbleManager : MonoBehaviour
     {
         _bubbleFrames.Clear();
         SavingSystem.Instance.LoadBubbles(this, "UUID+TypeA");
+        DeactivateAllBubbles();
     }
 
     /// <summary>
@@ -62,10 +63,20 @@ public class BubbleManager : MonoBehaviour
         _bubbleFrames.Add(newBubble);
         //newBubble.GetComponent<BubbleData>().LoadEmptyBubble();
         newBubble.GetComponent<BubbleGameStateController>().LoadBubbleEmpty();
+        
+        newBubble.GetComponent<BubbleGameStateController>().OnActivation();
         //add functionality to load with data
         
         Debug.Log($"Bubble added: {newBubble.name}");
         UpdateBubblePositions();
+    }
+
+    public void DeactivateAllBubbles()
+    {
+        foreach (var bubble in _bubbleFrames)
+        {
+            bubble.GetComponent<BubbleGameStateController>().OnDeActivation();
+        }
     }
 
     // Method to remove the last added bubble

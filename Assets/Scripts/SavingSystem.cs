@@ -73,6 +73,11 @@ public class SavingSystem : MonoBehaviour
         }
 
         string json = JsonUtility.ToJson(new BubbleSaveDataListWrapper(saveDataList));
+        if (PlayerPrefs.HasKey(memorySlotType))
+        {
+            PlayerPrefs.DeleteKey(memorySlotType);
+        }
+
         PlayerPrefs.SetString(memorySlotType, json);
         PlayerPrefs.Save();
     }

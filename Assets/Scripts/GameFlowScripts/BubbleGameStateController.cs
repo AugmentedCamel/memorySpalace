@@ -8,6 +8,9 @@ public class BubbleGameStateController : MonoBehaviour
     [SerializeField] private GameManager _gameManager;
     [SerializeField] private GameObject _inActiveBubble;
     [SerializeField] private GameObject _activeBubble;
+    [SerializeField] private BubbleMenuController _bubbleMenuController;
+    [SerializeField] private BubbleManager _bubbleManager;
+    [SerializeField] private SpeechBubble _speechBubble;
     
     // Start is called before the first frame update
     void Start()
@@ -33,9 +36,16 @@ public class BubbleGameStateController : MonoBehaviour
             //should not be able to activate bubbles
             return;
         }
+        _bubbleManager.DeactivateAllBubbles();
         
         _inActiveBubble.SetActive(false);
         _activeBubble.SetActive(true);
+
+        if (_speechBubble.HasData())
+        {
+            _bubbleMenuController.ToPage(2);
+        }
+        
         _activeBubble.GetComponent<BubbleMenuGameObjectController>().OnActivation();
         
         Debug.Log("BUBBLECONTROLLER Bubble Activated");
