@@ -9,7 +9,6 @@ public class MenuController : MonoBehaviour
     private GameObject _activeMenu;
 
     private bool _menuOpen = false;
-
     
     public void ActivateInitMenu()
     {
