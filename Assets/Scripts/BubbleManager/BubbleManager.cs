@@ -93,17 +93,17 @@ public class BubbleManager : MonoBehaviour
             {
                 string bubbleName = bubble.name; // Store the name before destroying
                 _bubbleFrames.RemoveAt(_bubbleFrames.Count - 1);
-                Debug.Log($"Removing bubble: {bubbleName}");
+                //Debug.Log($"Removing bubble: {bubbleName}");
 
                 if (Application.isPlaying)
                 {
                     Destroy(bubble);
-                    Debug.Log($"Bubble removed: {bubbleName}");
+                    //Debug.Log($"Bubble removed: {bubbleName}");
                 }
                 else
                 {
                     DestroyImmediate(bubble);
-                    Debug.Log($"Bubble removed immediately: {bubbleName}");
+                    //Debug.Log($"Bubble removed immediately: {bubbleName}");
                 }
 
                 CleanUpNullReferences();
@@ -111,13 +111,13 @@ public class BubbleManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Bubble to remove is already null!");
+                //Debug.LogWarning("Bubble to remove is already null!");
                 CleanUpNullReferences();
             }
         }
         else
         {
-            Debug.LogWarning("No bubbles to remove!");
+            //Debug.LogWarning("No bubbles to remove!");
         }
     }
 
@@ -128,13 +128,14 @@ public class BubbleManager : MonoBehaviour
         {
             if (_bubbleFrames[i] == null)
             {
-                Debug.Log($"Removing null reference at index {i}");
+                //Debug.Log($"Removing null reference at index {i}");
                 _bubbleFrames.RemoveAt(i);
             }
         }
     }
 
     // Method to update positions of bubbles around the parent
+    /*
     private void UpdateBubblePositions()
     {
         CleanUpNullReferences();
@@ -150,7 +151,26 @@ public class BubbleManager : MonoBehaviour
                 float x = Mathf.Cos(angle) * radius;
                 float z = Mathf.Sin(angle) * radius;
                 _bubbleFrames[i].transform.localPosition = new Vector3(x, 0, z);
-                Debug.Log($"Updated position of bubble {i}: {_bubbleFrames[i].name}");
+                //Debug.Log($"Updated position of bubble {i}: {_bubbleFrames[i].name}");
+            }
+        }
+    }*/
+    
+    private void UpdateBubblePositions()
+    {
+        CleanUpNullReferences();
+
+        float angleStep = 360.0f / _bubbleFrames.Count;
+        float radius = _bubbleSpacing * _bubbleFrames.Count / (2 * Mathf.PI);
+
+        for (int i = 0; i < _bubbleFrames.Count; i++)
+        {
+            if (_bubbleFrames[i] != null)
+            {
+                float angle = i * angleStep * Mathf.Deg2Rad;
+                float x = Mathf.Cos(angle) * radius;
+                float y = Mathf.Sin(angle) * radius;
+                _bubbleFrames[i].transform.localPosition = new Vector3(x, y, 0);
             }
         }
     }
