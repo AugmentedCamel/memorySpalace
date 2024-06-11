@@ -7,9 +7,10 @@ public class DefaultTrainMenuPicker : MonoBehaviour
 {
     [SerializeField] private GameObject _trainMenu;
     [SerializeField] private GameObject _defaultMenu;
-    [SerializeField] private GameObject _trainingHandMenu;
+    [SerializeField] private MenuController _trainingHandMenu;
     bool convertToTrain = false;
     bool convertToDefault = false;
+    
     public void PickTrain()
     {
         if (convertToTrain) return;
@@ -31,7 +32,7 @@ public class DefaultTrainMenuPicker : MonoBehaviour
 
     private void Update()
     {
-        if (_trainingHandMenu.activeInHierarchy)
+        if (_trainingHandMenu._trainMenuOpened)
         {
             PickTrain();
             convertToDefault = false;
@@ -43,5 +44,11 @@ public class DefaultTrainMenuPicker : MonoBehaviour
         }
         
         
+    }
+
+    private void OnDisable()
+    {
+        convertToDefault = false;
+        convertToTrain = false;
     }
 }
