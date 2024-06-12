@@ -7,7 +7,7 @@ using UnityEngine;
 public class BubbleData : MonoBehaviour
 {
     [SerializeField] private SpeechBubble _speechBubble;
-    [SerializeField] private ObjectBubble _objectBubble;
+    [SerializeField] public ObjectBubble _objectBubble;
     [SerializeField] private BubbleMenuController _bubbleMenuController;
     [SerializeField] private TextDisplayer _textDisplayer;
     

@@ -195,14 +195,13 @@ public class ObjectBubble : MonoBehaviour
         if (_currentlyAssignedObject != null)
         {
             ObjectsManager.Instance.AddObject(_currentlyAssignedObject.Item2);
+            _currentlyAssignedObject.Item2.SetActive(false);
+            _currentlyAssignedObject.Item2.transform.localScale = _originalObjectSize;
+            _currentlyAssignedObject.Item2.transform.rotation = _originalObjectRotation;
+            _currentlyAssignedObject.Item2.transform.parent = ObjectsManager.Instance.transform;
+            _currentlyAssignedObject.Item2.transform.position = Vector3.zero;
+            _currentlyAssignedObject = null;
         }
-
-        _currentlyAssignedObject.Item2.SetActive(false);
-        _currentlyAssignedObject.Item2.transform.localScale = _originalObjectSize;
-        _currentlyAssignedObject.Item2.transform.rotation = _originalObjectRotation;
-        _currentlyAssignedObject.Item2.transform.parent = ObjectsManager.Instance.transform;
-        _currentlyAssignedObject.Item2.transform.position = Vector3.zero;
-        _currentlyAssignedObject = null;
     }
     
     #endregion

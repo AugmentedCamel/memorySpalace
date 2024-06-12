@@ -64,6 +64,7 @@ public class BubbleManager : MonoBehaviour
     {
         foreach (var bubble in _bubbleFrames)
         {
+            bubble.GetComponent<BubbleData>()._objectBubble.DeleteObject();
             Destroy(bubble.gameObject);
         }
         _bubbleFrames.Clear();
