@@ -160,6 +160,8 @@ public class GameManager : MonoBehaviour
 
     public void OnExitCreatingBubbleSequenceTrigger()
     {
+        SavingSystem.Instance.SaveAnchors();
+        
         //do things to that disable the possibility to set new bubbles
         BackToNeutralGamestate();
     }

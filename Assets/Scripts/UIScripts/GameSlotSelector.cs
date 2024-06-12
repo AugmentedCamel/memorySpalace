@@ -1,12 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameSlotSelector : MonoBehaviour
 {
-    
     [SerializeField] private List<GameObject> _gameSlots;
-    
+
     public int activeSlot = 0;
     private int _lastActiveSlot = 0;
     // Start is called before the first frame update
@@ -38,6 +38,7 @@ public class GameSlotSelector : MonoBehaviour
     
     public void SetActiveSlot(int slot)
     {
+        GameSlotManager.Instance.SetCurrentSlot(slot);
         _lastActiveSlot = activeSlot;
         activeSlot = slot;
         SetMaterialOfActiveSlot();
