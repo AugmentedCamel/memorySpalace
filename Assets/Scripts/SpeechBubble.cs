@@ -12,7 +12,7 @@ public class SpeechBubble : MonoBehaviour
     
     // percentage text
     [SerializeField] private TextMeshPro _percentageSimilarity;
-    
+    [SerializeField] private GameObject _scoreDisplay;
     // audio source to play the clip
     [SerializeField] private AudioSource _audioSource;
 
@@ -114,7 +114,10 @@ public class SpeechBubble : MonoBehaviour
         _speechTextEvent.RemoveAllListeners();
         _speechTextEvent.AddListener(recognizedText =>
         {
-            _percentageSimilarity.text = " Success Rate: " + SpeechToTextManager.Instance.CalculateSimilarityPercentage(_currentString, recognizedText).ToString("F");
+            float similarity = SpeechToTextManager.Instance.CalculateSimilarityPercentage(_currentString, recognizedText);
+            _percentageSimilarity.text = " Success Rate: " +similarity.ToString("F");
+            _scoreDisplay.SetActive(true);
+            _scoreDisplay.GetComponent<ScorePanelController>().SetScoreWithAnimation((int)similarity);
             _speechTextEvent.RemoveAllListeners();
         });
     }
@@ -202,6 +205,9 @@ public class SpeechBubble : MonoBehaviour
         _currentString = "";
         _recordedText.text = "";
         _percentageSimilarity.text = "";
+        _scoreDisplay.GetComponent<ScorePanelController>().ResetScore();
+        _scoreDisplay.SetActive(false);
+        
     }
 
     /// <summary>

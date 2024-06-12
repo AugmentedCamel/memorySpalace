@@ -156,5 +156,13 @@ public class ScorePanelController : MonoBehaviour
         });
     }
    
+    public void ResetScore()
+    {
+        _score = 0;
+        _scoreText.text = "0";
+        _scoreSlider.value = 0;
+        _highScore = 0;
+        _highScoreText.text = "0";
+    }
     
 }
