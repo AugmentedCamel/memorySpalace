@@ -132,6 +132,22 @@ public class SavingSystem : MonoBehaviour
     }
 
     /// <summary>
+    /// Loads bubbles of anchor based on the current gameslot.
+    /// </summary>
+    public void LoadAnchors()
+    {
+        List<BubbleManager> anchors = FindObjectsOfType<BubbleManager>().ToList();
+
+        foreach (var anchor in anchors)
+        {
+            if (IsUuidSaved(anchor.GetUUID()))
+            {
+                anchor.LoadBubbles();
+            }
+        }
+    }
+
+    /// <summary>
     /// Deletes the bubbles/data of anchors for the current gameslot.
     /// </summary>
     public void DeleteAnchorsData()

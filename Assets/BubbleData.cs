@@ -36,20 +36,23 @@ public class BubbleData : MonoBehaviour
     public void SetBubbleData(BubbleSaveData bubbleData)
     {
         _speechBubble.SetBubbleText(bubbleData.text);
-        _speechBubble.SetBubbleAudioClipFromString(bubbleData.audioClipString, bubbleData.channels, bubbleData.frequency, bubbleData.lengthSamples);
-        Debug.Log(bubbleData.objectNames);
-        _objectBubble.AssignObjectFromString(bubbleData.objectNames);
+        if (bubbleData.audioClipString != "")
+        {
+            _speechBubble.SetBubbleAudioClipFromString(bubbleData.audioClipString, bubbleData.channels, bubbleData.frequency, bubbleData.lengthSamples);
+        }
+
+        if (bubbleData.objectNames != "")
+        {
+            _objectBubble.AssignObjectFromString(bubbleData.objectNames);
+            objectString = bubbleData.objectNames;
+        }
 
         text = bubbleData.text;
-        objectString = bubbleData.objectNames;
         
         _textDisplayer.UpdateText();
         // gameObject.GetComponent<BubbleGameStateController>().OnActivation();
         // _bubbleMenuController.ToPage(2);
     }
-
-    
-    
     
     public bool IsEmpty
     {

@@ -38,11 +38,15 @@ public class GameSlotSelector : MonoBehaviour
     
     public void SetActiveSlot(int slot)
     {
+        
+        
         GameSlotManager.Instance.SetCurrentSlot(slot);
         _lastActiveSlot = activeSlot;
         activeSlot = slot;
         SetMaterialOfActiveSlot();
         UnlockMaterialOfLastActiveSlot();
+        
+        SavingSystem.Instance.LoadAnchors();
     }
 
     public void UnlockMaterialOfLastActiveSlot()

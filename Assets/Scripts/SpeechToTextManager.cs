@@ -23,6 +23,7 @@ public class SpeechToTextManager : MonoBehaviour
     
     private AudioClip _currentAudioClip;
     private bool _isRecording = false;
+    private bool _isTesting = false;
 
     private UnityEvent<string> _currentPartialEvent;
     private UnityEvent<string> _currentFullTextEvent;
@@ -55,10 +56,12 @@ public class SpeechToTextManager : MonoBehaviour
     /// Method to record only a text.
     /// Recognized text is returned as the event parameter, as the method is asynchronous.
     /// </summary>
-    public void StartRecording(UnityEvent<string> recognizedTextEvent)
+    public void StartUserTest(UnityEvent<string> recognizedTextEvent)
     {
         if(_isRecording) return;
 
+        _isTesting = true;
+        
         // set events
         _currentFullTextEvent = recognizedTextEvent;
         
@@ -116,17 +119,39 @@ public class SpeechToTextManager : MonoBehaviour
         _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
         _appVoice.VoiceEvents.OnFullTranscription.AddListener(transcription =>
         {
-            _appVoice.Deactivate();
-            _appVoice.Activate();
-            _currentFullTextEvent.Invoke(transcription);
-            
-            // activate again to be able to recognize text with stoppings.
-            _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
-            _appVoice.VoiceEvents.OnFullTranscription.AddListener(transcription =>
+            if (_isTesting && !_isRecording)
+            {
+                _isTesting = false;
+                _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
+                _appVoice.Deactivate();
+                _currentFullTextEvent.Invoke(transcription);
+                _currentFullTextEvent.Invoke("FINISHED");
+            }
+            else
             {
                 _appVoice.Deactivate();
                 _appVoice.Activate();
                 _currentFullTextEvent.Invoke(transcription);
+            }
+
+            // activate again to be able to recognize text with stoppings.
+            _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
+            _appVoice.VoiceEvents.OnFullTranscription.AddListener(transcription =>
+            {
+                if (_isTesting && !_isRecording)
+                {
+                    _isTesting = false;
+                    _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
+                    _appVoice.Deactivate();
+                    _currentFullTextEvent.Invoke(transcription);
+                    _currentFullTextEvent.Invoke("FINISHED");
+                }
+                else
+                {
+                    _appVoice.Deactivate();
+                    _appVoice.Activate();
+                    _currentFullTextEvent.Invoke(transcription);
+                }
             });
         });
     }
@@ -146,7 +171,10 @@ public class SpeechToTextManager : MonoBehaviour
     private void StartRecording()
     {
         _isRecording = true;
-        _currentAudioClip = Microphone.Start(Microphone.devices[1], false, 180, 44100);
+        if (!_isTesting)
+        {
+            _currentAudioClip = Microphone.Start(Microphone.devices[1], false, 180, 44100);
+        }
         _appVoice.Deactivate();
         _appVoice.Activate();
     }
@@ -156,20 +184,27 @@ public class SpeechToTextManager : MonoBehaviour
     /// </summary>
     public void StopRecording()
     {
-        _isRecording = false;
-        _appVoice.Deactivate();
-        Microphone.End(Microphone.devices[1]);
-        _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
-        _appVoice.VoiceEvents.OnPartialTranscription.RemoveAllListeners();
-        
-        // send the data to listeners
-        _currentAudioClipEvent.Invoke(_currentAudioClip);
-        
-        // delete temporary data
-        _currentAudioClipEvent = null;
-        _currentPartialEvent = null;
-        _currentFullTextEvent = null;
-        _currentAudioClip = null;
+        if (_isTesting)
+        {
+            _isRecording = false;
+        }
+        else
+        {
+            _isRecording = false;
+            _appVoice.Deactivate();
+            Microphone.End(Microphone.devices[1]);
+            _appVoice.VoiceEvents.OnFullTranscription.RemoveAllListeners();
+            _appVoice.VoiceEvents.OnPartialTranscription.RemoveAllListeners();
+
+            // send the data to listeners
+            _currentAudioClipEvent.Invoke(_currentAudioClip);
+
+            // delete temporary data
+            _currentAudioClipEvent = null;
+            _currentPartialEvent = null;
+            _currentFullTextEvent = null;
+            _currentAudioClip = null;
+        }
     }
     
     #endregion
@@ -230,7 +265,6 @@ public class SpeechToTextManager : MonoBehaviour
     /// </summary>
     public string AudioClipToString(AudioClip clip)
     {
-        Debug.Log(clip);
         float[] samples = new float[clip.samples * clip.channels];
         clip.GetData(samples, 0);
 

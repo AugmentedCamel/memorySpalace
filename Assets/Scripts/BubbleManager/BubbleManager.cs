@@ -51,10 +51,23 @@ public class BubbleManager : MonoBehaviour
     [Button]
     public void LoadBubbles()
     {
-        // _bubbleFrames.Clear();
+        DeleteBubbleData();
         var key = GetUUID() + GetGameSlot();
         SavingSystem.Instance.LoadBubbles(this, key);
         DeactivateAllBubbles();
+    }
+
+    /// <summary>
+    /// Deletes all the bubbles and their data.
+    /// </summary>
+    public void DeleteBubbleData()
+    {
+        foreach (var bubble in _bubbleFrames)
+        {
+            Destroy(bubble.gameObject);
+        }
+        _bubbleFrames.Clear();
+        AddBubble();
     }
 
     /// <summary>

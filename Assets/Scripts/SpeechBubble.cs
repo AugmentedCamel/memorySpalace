@@ -109,20 +109,30 @@ public class SpeechBubble : MonoBehaviour
     /// </summary>
     private void TestUser()
     {
-        SpeechToTextManager.Instance.StartRecording(_speechTextEvent);
+        SpeechToTextManager.Instance.StartUserTest(_speechTextEvent);
+
+        var fullRecognizedText = "";
         
         // listen to recognized text
         _speechTextEvent.RemoveAllListeners();
         _speechTextEvent.AddListener(recognizedText =>
         {
-            float similarity = SpeechToTextManager.Instance.CalculateSimilarityPercentage(_currentString, recognizedText);
-            _percentageSimilarity.text = " Success Rate: " +similarity.ToString("F");
-            _scoreDisplay.SetActive(true);
-            _scoreDisplay.GetComponent<ScorePanelController>().SetScoreWithAnimation((int)similarity);
-            _speechTextEvent.RemoveAllListeners();
-            Debug.Log("_currentString: " + _currentString);
-            Debug.Log("recognizedText: " + recognizedText);
-            _testTextDisplayer.UpdateText(recognizedText); 
+            if (recognizedText.Contains("FINISHED"))
+            {
+                _testTextDisplayer.UpdateText(fullRecognizedText);
+                float similarity =
+                    SpeechToTextManager.Instance.CalculateSimilarityPercentage(_currentString, fullRecognizedText);
+                _percentageSimilarity.text = " Success Rate: " + similarity.ToString("F");
+                _scoreDisplay.SetActive(true);
+                _scoreDisplay.GetComponent<ScorePanelController>().SetScoreWithAnimation((int)similarity);
+                _speechTextEvent.RemoveAllListeners();
+            }
+            else
+            {
+                fullRecognizedText += " " + recognizedText;
+                Debug.Log("_currentString: " + _currentString);
+                Debug.Log("recognizedText: " + fullRecognizedText);
+            }
         });
     }
     
@@ -239,6 +249,11 @@ public class SpeechBubble : MonoBehaviour
     /// </summary>
     public string GetBubbleAudioClipAsString()
     {
+        if (_audioClip == null)
+        {
+            return "";
+        }
+        
         return SpeechToTextManager.Instance.AudioClipToString(_audioClip);
     }
 
@@ -247,6 +262,10 @@ public class SpeechBubble : MonoBehaviour
     /// </summary>
     public int GetAudioClipChannels()
     {
+        if (_audioClip == null)
+        {
+            return 0;
+        }
         return _audioClip.channels;
     }
 
@@ -255,6 +274,11 @@ public class SpeechBubble : MonoBehaviour
     /// </summary>
     public int GetAudioClipFrequency()
     {
+        if (_audioClip == null)
+        {
+            return 0;
+        }
+        
         return _audioClip.frequency;
     }
 
@@ -263,6 +287,11 @@ public class SpeechBubble : MonoBehaviour
     /// </summary>
     public int GetAudioClipSamples()
     {
+        if (_audioClip == null)
+        {
+            return 0;
+        }
+        
         return _audioClip.samples;
     }
 

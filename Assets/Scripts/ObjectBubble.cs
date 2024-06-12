@@ -191,9 +191,12 @@ public class ObjectBubble : MonoBehaviour
     {
         StopAllCoroutines();
         _animation = null;
-        
-        ObjectsManager.Instance.AddObject(_currentlyAssignedObject.Item2);
-        
+
+        if (_currentlyAssignedObject != null)
+        {
+            ObjectsManager.Instance.AddObject(_currentlyAssignedObject.Item2);
+        }
+
         _currentlyAssignedObject.Item2.SetActive(false);
         _currentlyAssignedObject.Item2.transform.localScale = _originalObjectSize;
         _currentlyAssignedObject.Item2.transform.rotation = _originalObjectRotation;

@@ -118,8 +118,6 @@ public class AnchorLoader : MonoBehaviour
             savedStatusText.text = "Loaded from Device";
             
             _spatialAnchorManager._anchors.Add(anchor);
-            
-            uuidText.gameObject.transform.root.GetComponentInChildren<BubbleManager>().LoadBubbles();
         }
     }
     
