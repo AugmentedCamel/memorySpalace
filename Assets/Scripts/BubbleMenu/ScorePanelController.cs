@@ -133,6 +133,7 @@ public class ScorePanelController : MonoBehaviour
     [Button]
     public void OnAchieveHighScore(int score)
     {
+        _highScore = score;
         if (!_HighScoreSound.isPlaying)
         {
             _HighScoreSound.Play();
