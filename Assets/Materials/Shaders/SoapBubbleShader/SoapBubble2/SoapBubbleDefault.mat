@@ -162,13 +162,13 @@ Material:
     - _flow_strength: 0.5
     - _mat_angle: 0.21
     - _mat_scale: 1
-    - _pow: 3.7
-    - _powh: 19
+    - _pow: 9.88
+    - _powh: 17.07
     - _tile: 1
     - _tileOffsetX: 0
     - _tileOffsetY: 0.248
     - _tileUV: 1.5
-    - rimWidth: 1.18
+    - rimWidth: 0.346
     m_Colors:
     - _BaseColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 0.078431375}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
