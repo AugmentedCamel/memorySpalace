@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //Bubble Data Save Type
@@ -56,6 +57,9 @@ public class SavingSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Deletes given key from the PlayerPrefs.
+    /// </summary>
     public void DeleteData(string memorySlotType)
     {
         PlayerPrefs.DeleteKey(memorySlotType);
@@ -92,9 +96,12 @@ public class SavingSystem : MonoBehaviour
             string json = PlayerPrefs.GetString(memorySlotType);
             BubbleSaveDataListWrapper wrapper = JsonUtility.FromJson<BubbleSaveDataListWrapper>(json);
 
-            foreach (BubbleSaveData saveData in wrapper.bubblesData)
+            if (wrapper.bubblesData.Count > 1)
             {
-                bubbleManager.AddBubble();
+                for(int i = 0; i < wrapper.bubblesData.Count - 1; i++)
+                {
+                    bubbleManager.AddBubble();
+                }
             }
 
             for(int i = 0; i < bubbleManager._bubbleFrames.Count; i++)
@@ -106,6 +113,58 @@ public class SavingSystem : MonoBehaviour
         {
             Debug.LogWarning("No data found in PlayerPrefs.");
         }
+    }
+
+    /// <summary>
+    /// Saves bubbles for the current gameslot from anchors that have been saved to PlayerPref. (that are type of SavedAnchorPrefab)
+    /// </summary>
+    public void SaveAnchors()
+    {
+        List<BubbleManager> anchors = FindObjectsOfType<BubbleManager>().ToList();
+
+        foreach (var anchor in anchors)
+        {
+            if (IsUuidSaved(anchor.GetUUID()))
+            {
+                anchor.SaveBubbles();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Deletes the bubbles/data of anchors for the current gameslot.
+    /// </summary>
+    public void DeleteAnchorsData()
+    {
+        List<BubbleManager> anchors = FindObjectsOfType<BubbleManager>().ToList();
+
+        foreach (var anchor in anchors)
+        {
+            if (IsUuidSaved(anchor.GetUUID()))
+            {
+                anchor.DeleteBubbles();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns true if uuid of the anchor has been saved to PlayerPrefs, otherwise false.
+    /// </summary>
+    public bool IsUuidSaved(string uuid)
+    {
+        bool isSaved = false;
+        
+        int playerNumUuids = PlayerPrefs.GetInt(NumUuidsPlayerPref);
+
+        for (int i = 0; i < playerNumUuids; i++)
+        {
+            var uuidKey = "uuid" + i;
+            if (PlayerPrefs.GetString(uuidKey) == uuid)
+            {
+                isSaved = true;
+            }
+        }
+        return isSaved;
     }
 
     public void SaveUuidToPlayerPrefs(Guid uuid)

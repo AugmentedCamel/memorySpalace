@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using TMPro;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -13,7 +14,20 @@ public class BubbleManager : MonoBehaviour
     [SerializeField] private Transform _bubbleParent;      // Parent transform to hold bubbles
     [SerializeField] private GameObject _bubblePrefab;     // Prefab to instantiate bubbles
 
+    [Button]
+    public string GetUUID()
+    {
+        var canvas = transform.root.GetComponentInChildren<Canvas>();
+        var uuid = canvas.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        
+        return uuid;
+    }
 
+    public string GetGameSlot()
+    {
+        return GameSlotManager.Instance.GetCurrentSlot().ToString();
+    }
+    
     /// <summary>
     /// Saves all bubble data from bubbleFrames list.
     /// </summary>
@@ -27,7 +41,8 @@ public class BubbleManager : MonoBehaviour
             bubbblesData.Add(bubble.GetComponent<BubbleData>());
         }
         
-        SavingSystem.Instance.SaveBubbles(bubbblesData, "UUID+TypeA");
+        var key = GetUUID() + GetGameSlot();
+        SavingSystem.Instance.SaveBubbles(bubbblesData, key);
     }
 
     /// <summary>
@@ -36,8 +51,9 @@ public class BubbleManager : MonoBehaviour
     [Button]
     public void LoadBubbles()
     {
-        _bubbleFrames.Clear();
-        SavingSystem.Instance.LoadBubbles(this, "UUID+TypeA");
+        // _bubbleFrames.Clear();
+        var key = GetUUID() + GetGameSlot();
+        SavingSystem.Instance.LoadBubbles(this, key);
         DeactivateAllBubbles();
     }
 
@@ -46,7 +62,8 @@ public class BubbleManager : MonoBehaviour
     /// </summary>
     public void DeleteBubbles()
     {
-        SavingSystem.Instance.DeleteData("UUID+TypeA");
+        var key = GetUUID() + GetGameSlot();
+        SavingSystem.Instance.DeleteData(key);
     }
     
 
