@@ -13,6 +13,7 @@ public class SpeechBubble : MonoBehaviour
     // percentage text
     [SerializeField] private TextMeshPro _percentageSimilarity;
     [SerializeField] private GameObject _scoreDisplay;
+    [SerializeField] private TextDisplayer _testTextDisplayer;
     // audio source to play the clip
     [SerializeField] private AudioSource _audioSource;
 
@@ -119,6 +120,9 @@ public class SpeechBubble : MonoBehaviour
             _scoreDisplay.SetActive(true);
             _scoreDisplay.GetComponent<ScorePanelController>().SetScoreWithAnimation((int)similarity);
             _speechTextEvent.RemoveAllListeners();
+            Debug.Log("_currentString: " + _currentString);
+            Debug.Log("recognizedText: " + recognizedText);
+            _testTextDisplayer.UpdateText(recognizedText); 
         });
     }
     
