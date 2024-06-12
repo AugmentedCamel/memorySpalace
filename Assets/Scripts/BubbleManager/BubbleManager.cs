@@ -66,6 +66,8 @@ public class BubbleManager : MonoBehaviour
         SavingSystem.Instance.DeleteData(key);
     }
     
+
+
     // Method to add a bubble
     [Button("Add Bubble")]
     public void AddBubble()
@@ -79,12 +81,12 @@ public class BubbleManager : MonoBehaviour
         GameObject newBubble = Instantiate(_bubblePrefab, _bubbleParent);
         newBubble.SetActive(true);
         _bubbleFrames.Add(newBubble);
-        //newBubble.GetComponent<BubbleData>().LoadEmptyBubble();
         newBubble.GetComponent<BubbleGameStateController>().LoadBubbleEmpty();
+
         
         newBubble.GetComponent<BubbleGameStateController>().OnActivation();
         //add functionality to load with data
-        
+
         Debug.Log($"Bubble added: {newBubble.name}");
         UpdateBubblePositions();
     }
@@ -108,80 +110,122 @@ public class BubbleManager : MonoBehaviour
             {
                 string bubbleName = bubble.name; // Store the name before destroying
                 _bubbleFrames.RemoveAt(_bubbleFrames.Count - 1);
-                Debug.Log($"Removing bubble: {bubbleName}");
+                //Debug.Log($"Removing bubble: {bubbleName}");
 
                 if (Application.isPlaying)
                 {
                     Destroy(bubble);
-                    Debug.Log($"Bubble removed: {bubbleName}");
+                    //Debug.Log($"Bubble removed: {bubbleName}");
                 }
                 else
                 {
                     DestroyImmediate(bubble);
-                    Debug.Log($"Bubble removed immediately: {bubbleName}");
+                    //Debug.Log($"Bubble removed immediately: {bubbleName}");
                 }
 
-                // Clean up the list before updating positions
                 CleanUpNullReferences();
                 UpdateBubblePositions();
             }
             else
             {
-                Debug.LogWarning("Bubble to remove is already null!");
+                //Debug.LogWarning("Bubble to remove is already null!");
                 CleanUpNullReferences();
             }
         }
         else
         {
-            Debug.LogWarning("No bubbles to remove!");
+            //Debug.LogWarning("No bubbles to remove!");
         }
     }
 
     // Method to clean up null references from the list
     private void CleanUpNullReferences()
     {
-        //Debug.Log("Cleaning up null references...");
         for (int i = _bubbleFrames.Count - 1; i >= 0; i--)
         {
             if (_bubbleFrames[i] == null)
             {
-                Debug.Log($"Removing null reference at index {i}");
+                //Debug.Log($"Removing null reference at index {i}");
                 _bubbleFrames.RemoveAt(i);
             }
         }
     }
-    
-    //method to reset the prefab to empty
-    
-    // Method to update positions of bubbles
+
+    // Method to update positions of bubbles around the parent
+    /*
     private void UpdateBubblePositions()
     {
         CleanUpNullReferences();
+
+        float angleStep = 360.0f / _bubbleFrames.Count;
+        float radius = _bubbleSpacing * _bubbleFrames.Count / (2 * Mathf.PI);
+
         for (int i = 0; i < _bubbleFrames.Count; i++)
         {
             if (_bubbleFrames[i] != null)
             {
-                _bubbleFrames[i].transform.localPosition = new Vector3(i * _bubbleSpacing, 0, 0);
-                Debug.Log($"Updated position of bubble {i}: {_bubbleFrames[i].name}");
+                float angle = i * angleStep * Mathf.Deg2Rad;
+                float x = Mathf.Cos(angle) * radius;
+                float z = Mathf.Sin(angle) * radius;
+                _bubbleFrames[i].transform.localPosition = new Vector3(x, 0, z);
+                //Debug.Log($"Updated position of bubble {i}: {_bubbleFrames[i].name}");
             }
+        }
+    }*/
+    
+    private void UpdateBubblePositions()
+    {
+        CleanUpNullReferences();
+
+        float angleStep = 360.0f / _bubbleFrames.Count;
+        float radius = _bubbleSpacing * _bubbleFrames.Count / (2 * Mathf.PI);
+
+        for (int i = 0; i < _bubbleFrames.Count; i++)
+        {
+            if (_bubbleFrames[i] != null)
+            {
+                float angle = i * angleStep * Mathf.Deg2Rad;
+                float x = Mathf.Cos(angle) * radius;
+                float y = Mathf.Sin(angle) * radius;
+                _bubbleFrames[i].transform.localPosition = new Vector3(x, y, 0);
+            }
+        }
+    }
+
+    // Draw gizmo to visualize the bubble circle
+    private void OnDrawGizmos()
+    {
+        if (_bubbleParent == null) return;
+
+        Gizmos.color = Color.green;
+        float radius = _bubbleSpacing * _bubbleFrames.Count / (2 * Mathf.PI);
+        int segments = 100;
+        Vector3 prevPoint = _bubbleParent.position + new Vector3(Mathf.Cos(0) * radius, 0, Mathf.Sin(0) * radius);
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float angle = i * Mathf.PI * 2 / segments;
+            Vector3 newPoint = _bubbleParent.position + new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
+            Gizmos.DrawLine(prevPoint, newPoint);
+            prevPoint = newPoint;
         }
     }
 
     // Called when the script is enabled
     private void OnEnable()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         EditorApplication.update += EditorUpdate;
-        #endif
+#endif
         CleanUpNullReferences();
     }
 
     // Called when the script is disabled
     private void OnDisable()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         EditorApplication.update -= EditorUpdate;
-        #endif
+#endif
         CleanUpNullReferences();
     }
 
@@ -197,6 +241,7 @@ public class BubbleManager : MonoBehaviour
         if (!Application.isPlaying)
         {
             CleanUpNullReferences();
+            UpdateBubblePositions();
         }
     }
 
