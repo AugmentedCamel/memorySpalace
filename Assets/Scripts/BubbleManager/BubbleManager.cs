@@ -189,6 +189,19 @@ public class BubbleManager : MonoBehaviour
     
     private void UpdateBubblePositions()
     {
+        if (_bubbleFrames.Count == 2)
+        {
+            _bubbleSpacing = 0.5f;
+        }
+        else if (_bubbleFrames.Count == 3)
+        {
+            _bubbleSpacing = 0.45f;
+        }
+        else
+        {
+            _bubbleSpacing = 0.4f;
+        }
+        
         CleanUpNullReferences();
 
         float angleStep = 360.0f / _bubbleFrames.Count;

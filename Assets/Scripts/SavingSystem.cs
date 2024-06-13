@@ -158,6 +158,7 @@ public class SavingSystem : MonoBehaviour
         {
             if (IsUuidSaved(anchor.GetUUID()))
             {
+                anchor.DeleteBubbleData();
                 anchor.DeleteBubbles();
             }
         }

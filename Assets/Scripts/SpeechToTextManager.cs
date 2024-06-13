@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using Oculus.Voice;
 using UnityEngine;
 using UnityEngine.Events;
@@ -216,11 +217,19 @@ public class SpeechToTextManager : MonoBehaviour
     /// </summary>
     public float CalculateSimilarityPercentage(string source, string target)
     {
+        source = RemovePunctuation(source);
+        target = RemovePunctuation(target);
+        
         int maxLength = Math.Max(source.Length, target.Length);
         if (maxLength == 0) return 100.0f;
 
         int distance = LevenshteinDistance(source, target);
         return ((float)(maxLength - distance) / maxLength) * 100;
+    }
+    
+    private string RemovePunctuation(string input)
+    {
+        return Regex.Replace(input, @"[\s\p{P}]", "");
     }
     
     /// <summary>
