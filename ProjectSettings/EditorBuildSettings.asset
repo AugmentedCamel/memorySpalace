@@ -35,9 +35,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MVP Scenes/MVP9.unity
     guid: 26617a110bdff1641938b861da937714
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MVP Scenes/MVP10.unity
     guid: 255f1210d5765db4994d60fa3ba19f8e
+  - enabled: 1
+    path: Assets/Scenes/MVP Scenes/MVP FINAL SCENE.unity
+    guid: cba0c83d63bcff14f9cec756066abd6c
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 29b71dbc7dfff6045aed4f9f550f148e,
       type: 2}
