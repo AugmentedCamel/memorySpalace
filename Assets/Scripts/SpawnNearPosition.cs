@@ -20,7 +20,7 @@ public class SpawnNearPosition : MonoBehaviour
         Debug.Log(_Headposition.position);
         Vector3 spawnPosition = _Headposition.position + _Headposition.forward * _distance;
         gameObject.transform.position = spawnPosition;
-        gameObject.transform.rotation = _Headposition.rotation;
+        gameObject.transform.rotation.eulerAngles.Set(0, _Headposition.rotation.eulerAngles.y, 0);
         gameObject.SetActive(true);
     }
 }

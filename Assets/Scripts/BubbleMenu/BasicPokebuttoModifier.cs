@@ -32,7 +32,10 @@ public class BasicPokebuttoModifier : MonoBehaviour
     public void RunButtonSelected()
     {
         OnButtonSelected.Invoke();
-        InfoText.text = InfoTextString;
+        if (InfoText != null)
+        {
+            InfoText.text = InfoTextString;    
+        }
     }
     
     public void RunButtonDeselected()
