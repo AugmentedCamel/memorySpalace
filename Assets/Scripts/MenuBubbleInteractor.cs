@@ -98,6 +98,7 @@ public class MenuBubbleInteractor : MonoBehaviour
         _activeCoroutine = StartCoroutine(DeactivateButton());
         
         _bubbleEventLauncher.LaunchBubbleEvent();
+        if (!_isMaterialLocked) _renderer.material = _startmaterial;
         onTriggerEnteredEvent.Invoke();
     }
     

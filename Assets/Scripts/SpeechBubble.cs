@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -32,7 +33,12 @@ public class SpeechBubble : MonoBehaviour
     #endregion
 
     #region Private Record Methods
-    
+
+    private void OnDisable()
+    {
+        _recordedText.gameObject.SetActive(false);
+    }
+
     /// <summary>
     /// Records partial text, full text and audio of users input.
     /// </summary>

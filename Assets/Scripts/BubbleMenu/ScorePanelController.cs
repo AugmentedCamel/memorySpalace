@@ -119,7 +119,7 @@ public class ScorePanelController : MonoBehaviour
         DOTween.To(() => currentPercentage, x => _scoreSlider.value = x, score, _textUpdateAnimationDuration)
             .OnUpdate(() => SetColorBasedOnscore((int) _scoreSlider.value));
         // Adjust audio properties
-        DOTween.To(() => _scoreUpdateSound.volume, x => _scoreUpdateSound.volume = x, 1, _textUpdateAnimationDuration);
+        DOTween.To(() => _scoreUpdateSound.volume, x => _scoreUpdateSound.volume = x, 0.5f, _textUpdateAnimationDuration);
         // Optionally, play a sound if it's not already playing
         if (!_scoreUpdateSound.isPlaying)
         {
