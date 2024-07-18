@@ -31,11 +31,18 @@ public class BubbleGameStateController : MonoBehaviour
         UpdateToGameState();
         SetBubbleVariant(_currentState);
         */
-        if (_currentState == GameManager.GameState.gameNeutral)
+        if (_gameManager.gameState == GameManager.GameState.gameNeutral)
+        {
+            //should not be able to activate bubbles
+            Debug.Log("BUBBLECONTROLLER Bubble Activated but gamestate is neutral");
+            return;
+        }
+        
+        /*if (_currentState == GameManager.GameState.gameNeutral)
         {
             //should not be able to activate bubbles
             return;
-        }
+        }*/
         _bubbleManager.DeactivateAllBubbles();
         
         _inActiveBubble.SetActive(false);
