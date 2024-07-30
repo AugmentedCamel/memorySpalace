@@ -11,7 +11,8 @@ public class SpawnNearPosition : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SpawnMenu();
+        //SpawnMenu();
+        gameObject.SetActive(false);
     }
     
     [Button]

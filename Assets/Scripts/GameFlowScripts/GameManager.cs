@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameBaseAnchorController _gameBaseAnchorController;
     [SerializeField] private MenuController _menuController; //this is for hand menu
     [SerializeField] private GameObject _tutorial;
+    [SerializeField] private GameObject _hiddenParent;
+    [SerializeField] private List<GameObject> _prefabsToHide;
     private GameState _lastGameState = GameState.Debug;
     
     // Start is called before the first frame update
@@ -46,8 +48,16 @@ public class GameManager : MonoBehaviour
     
     private void GameLaunch()
     {
-        _tutorial.SetActive(true);
-        _tutorial.GetComponent<SpawnNearPosition>().SpawnMenu();
+        //Hide the prefabs by parenting them to the hidden parent
+        //this is done to prevent the prefabs from being visible in the scene
+        //when the scene is loaded
+        foreach (var obj in _prefabsToHide)
+        {
+            obj.transform.SetParent(_hiddenParent.transform);
+        }
+        
+        
+        
         //check if there is any saved data
         if (_gameBaseAnchorController.CheckForSavedData())
         {
