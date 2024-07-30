@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private GameBaseAnchorController _gameBaseAnchorController;
     [SerializeField] private MenuController _menuController; //this is for hand menu
-    
+    [SerializeField] private GameObject _tutorial;
     private GameState _lastGameState = GameState.Debug;
     
     // Start is called before the first frame update
@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
     
     private void GameLaunch()
     {
+        _tutorial.SetActive(true);
+        _tutorial.GetComponent<SpawnNearPosition>().SpawnMenu();
         //check if there is any saved data
         if (_gameBaseAnchorController.CheckForSavedData())
         {
